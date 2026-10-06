@@ -2,3 +2,4 @@
 tools/engine-compare/ext/
 tools/engine-compare/saju-src/
 tools/engine-compare/venv/
+__pycache__/

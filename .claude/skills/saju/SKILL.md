@@ -1,13 +1,10 @@
 ---
 name: saju
 description: |
-  생년월일시·성별만 받으면 유료 평생사주 앱(포스텔러·점신 류) 수준의 방대한
-  "평생사주 풀이"를 18장 목차로 뽑아주는 스킬. 실제 만세력 엔진(manse.cjs)으로
-  절기 경계까지 정확한 명식을 계산한 뒤, 일간·오행·십신·격국·용신·대운·신살
-  데이터에 근거해 챕터별로 길고 구체적인 해석을 생성한다. 풀이가 끝나면 그때부터
-  무엇이든 질문할 수 있는 Q&A 모드로 전환.
-  Use when the user says "사주 봐줘", "평생사주", "내 사주 풀이", "사주 분석",
-  "saju", gives a birth date/time for fortune reading, or asks "사주 질문" 등.
+  [구버전·참고용] 사주 풀이에는 saju-standard 스킬을 사용할 것. 이 스킬의 엔진은
+  한국 출생자의 절입 판정이 1시간 어긋나고(절입 후 1시간 이내 출생은 연·월주 오류)
+  서머타임·UTC+8:30 시기를 처리하지 않는다(docs/engine-comparison-2026-10.md).
+  사용자가 "구버전 saju 스킬" / "be-realdeveloper 스킬"을 명시적으로 요청할 때만 사용.
 allowed-tools:
   - Bash
   - Read

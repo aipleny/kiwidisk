@@ -179,7 +179,8 @@ MBTI 모듈은 사주 엔진을 import하지 않고, 사주 JSON과 MBTI JSON을
 
 1. ✅ 공개 스킬 수집·정적 비교
 2. ✅ 엔진 교차검증 1차(경계 14건) → 엔진 방침 확정 (§2.6)
-3. L1 래퍼 작성(§2.1 파이프라인 + §2.3 모드 + §2.4 경고)
-4. L2 규칙표·결정론 모듈 → 518,400 전수 테스트
-5. L3 MBTI 모듈(말투 개인화 → 비교 카드 → 궁합)
-6. `saju-standard` 스킬로 묶어 배포, 기존 `saju` 스킬은 참고용으로 유지
+3. ✅ L1 엔진 `engine/saju_std.py` + 검증 세트 `tests/run_tests.py` (결과: `references/calculation-standard.md`)
+4. ✅ L2 `engine/interpret.py` → 518,400 + 43,200 전수 불변식 위반 0
+5. ✅ L3 `engine/mbti_layer.py` (말투·비교 카드·시기×인지기능·이중 궁합)
+6. ✅ `.claude/skills/saju-standard` 스킬로 묶음, 기존 `saju` 스킬은 구버전 표시
+7. ⏳ 궁통보감 조후표·격국 성패 규칙 원전 검수(`verify:원전`), MBTI 매핑 실사용자 검증(§5.3)
