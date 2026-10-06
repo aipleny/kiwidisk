@@ -1,0 +1,146 @@
+{
+ "mode": "seoul",
+ "longitude": 126.978,
+ "rows": [
+  {
+   "case": "normal",
+   "input": "1995-08-15 14:30",
+   "realdev": "乙亥 甲申 戊寅 己未",
+   "adminhelper": "乙亥 甲申 戊寅 己未",
+   "hermes": "乙亥 甲申 戊寅 己未",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "乙亥 甲申 戊寅 己未",
+   "samsin": "乙亥 甲申 戊寅 己未"
+  },
+  {
+   "case": "ipchun-before",
+   "input": "2024-02-04 17:20",
+   "realdev": "甲辰 丙寅 戊戌 庚申",
+   "adminhelper": "癸卯 乙丑 戊戌 庚申",
+   "hermes": "癸卯 乙丑 戊戌 庚申",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "甲辰 丙寅 戊戌 庚申",
+   "samsin": "甲辰 丙寅 戊戌 庚申"
+  },
+  {
+   "case": "ipchun-after",
+   "input": "2024-02-04 17:35",
+   "realdev": "甲辰 丙寅 戊戌 辛酉",
+   "adminhelper": "甲辰 丙寅 戊戌 辛酉",
+   "hermes": "癸卯 乙丑 戊戌 辛酉",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "甲辰 丙寅 戊戌 辛酉",
+   "samsin": "甲辰 丙寅 戊戌 庚申"
+  },
+  {
+   "case": "gyeongchip-bef",
+   "input": "2023-03-06 05:30",
+   "realdev": "癸卯 乙卯 癸亥 甲寅",
+   "adminhelper": "癸卯 乙卯 癸亥 甲寅",
+   "hermes": "癸卯 甲寅 癸亥 甲寅",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "癸卯 乙卯 癸亥 甲寅",
+   "samsin": "癸卯 乙卯 癸亥 甲寅"
+  },
+  {
+   "case": "gyeongchip-aft",
+   "input": "2023-03-06 05:45",
+   "realdev": "癸卯 乙卯 癸亥 乙卯",
+   "adminhelper": "癸卯 乙卯 癸亥 乙卯",
+   "hermes": "癸卯 甲寅 癸亥 乙卯",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "癸卯 乙卯 癸亥 乙卯",
+   "samsin": "癸卯 乙卯 癸亥 乙卯"
+  },
+  {
+   "case": "sohan-before",
+   "input": "2025-01-05 11:25",
+   "realdev": "甲辰 丁丑 甲戌 己巳",
+   "adminhelper": "甲辰 丙子 甲戌 己巳",
+   "hermes": "甲辰 丙子 甲戌 己巳",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "甲辰 丁丑 甲戌 己巳",
+   "samsin": "甲辰 丁丑 甲戌 己巳"
+  },
+  {
+   "case": "sohan-after",
+   "input": "2025-01-05 11:40",
+   "realdev": "甲辰 丁丑 甲戌 庚午",
+   "adminhelper": "甲辰 丁丑 甲戌 庚午",
+   "hermes": "甲辰 丙子 甲戌 庚午",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "甲辰 丁丑 甲戌 庚午",
+   "samsin": "甲辰 丁丑 甲戌 庚午"
+  },
+  {
+   "case": "jasi-2330",
+   "input": "1990-05-10 23:30",
+   "realdev": "庚午 辛巳 乙亥 丁亥",
+   "adminhelper": "庚午 辛巳 乙亥 丁亥",
+   "hermes": "庚午 辛巳 乙亥 丁亥",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "庚午 辛巳 乙亥 丁亥",
+   "samsin": "庚午 辛巳 乙亥 戊子"
+  },
+  {
+   "case": "jasi-0030",
+   "input": "1990-05-11 00:30",
+   "realdev": "庚午 辛巳 乙亥 戊子",
+   "adminhelper": "庚午 辛巳 丙子 戊子",
+   "hermes": "庚午 辛巳 乙亥 丙子",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "庚午 辛巳 乙亥 戊子",
+   "samsin": "庚午 辛巳 丙子 戊子"
+  },
+  {
+   "case": "dst-1988",
+   "input": "1988-07-15 07:50",
+   "realdev": "戊辰 己未 辛未 壬辰",
+   "adminhelper": "戊辰 己未 辛未 壬辰",
+   "hermes": "戊辰 己未 辛未 壬辰",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "戊辰 己未 辛未 辛卯",
+   "samsin": "戊辰 己未 辛未 壬辰"
+  },
+  {
+   "case": "utc830-1958",
+   "input": "1958-06-15 06:50",
+   "realdev": "戊戌 戊午 癸亥 乙卯",
+   "adminhelper": "戊戌 戊午 癸亥 乙卯",
+   "hermes": "戊戌 戊午 癸亥 乙卯",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "戊戌 戊午 癸亥 乙卯",
+   "samsin": "戊戌 戊午 癸亥 乙卯"
+  },
+  {
+   "case": "utc830-1955-jan",
+   "input": "1955-01-15 07:10",
+   "realdev": "甲午 丁丑 丙子 辛卯",
+   "adminhelper": "甲午 丁丑 丙子 辛卯",
+   "hermes": "甲午 丁丑 丙子 辛卯",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "甲午 丁丑 丙子 辛卯",
+   "samsin": "甲午 丁丑 丙子 辛卯"
+  },
+  {
+   "case": "midnight-2000",
+   "input": "2000-01-01 00:10",
+   "realdev": "己卯 丙子 丁巳 壬子",
+   "adminhelper": "己卯 丙子 戊午 壬子",
+   "hermes": "己卯 丙子 丁巳 庚子",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "己卯 丙子 丁巳 壬子",
+   "samsin": "己卯 丙子 丁巳 壬子"
+  },
+  {
+   "case": "hour-boundary",
+   "input": "1979-11-03 09:05",
+   "realdev": "己未 甲戌 甲戌 戊辰",
+   "adminhelper": "己未 甲戌 甲戌 戊辰",
+   "hermes": "己未 甲戌 甲戌 戊辰",
+   "jeomsin": "n/a(no lon)",
+   "destiny": "己未 甲戌 甲戌 戊辰",
+   "samsin": "己未 甲戌 甲戌 戊辰"
+  }
+ ]
+}
