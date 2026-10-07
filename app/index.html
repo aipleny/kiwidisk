@@ -118,12 +118,12 @@ footer { font-size: 13px; color: var(--muted); }
   <header class="top">
     <span class="eyebrow">만세력 · 궁통보감 · 자평진전 · MBTI</span>
     <h1>오행 MBTI 사주</h1>
-    <p class="muted">생년월일시를 넣으면 검증된 만세력으로 명식을 세우고, 고전의 규칙과 MBTI를 겹쳐 풀어 드려요. 계산은 이 화면 안에서만 이뤄지고 입력값은 저장하지 않아요.</p>
+    <p class="muted">생년월일시를 넣으면 검증된 만세력으로 명식을 세우고, 고전의 규칙과 MBTI를 겹쳐 풀어 드려요. 계산은 이 화면 안에서만 이뤄져요. 「내 사주로 저장」을 누르면 다음부터 열자마자 내 풀이가 보이고, 저장한 정보는 나만 볼 수 있어요.</p>
   </header>
 
   <section class="panel" aria-labelledby="in-h">
     <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap">
-      <h2 id="in-h">태어난 때</h2><span class="example-tag" id="example-tag">예시 입력이 채워져 있어요</span>
+      <h2 id="in-h">태어난 때</h2><span class="example-tag" id="example-tag">예시 입력이 채워져 있어요</span><span class="example-tag" id="mine-tag" hidden>내 사주</span>
     </div>
     <form id="f" novalidate>
       <div class="row">
@@ -143,7 +143,7 @@ footer { font-size: 13px; color: var(--muted); }
         <label for="mbti">MBTI (선택)<input id="mbti" placeholder="예: ENFP 또는 ENFP-T" autocomplete="off" maxlength="6"></label>
         <label for="zishi">자시(밤 11시~1시) 학파<select id="zishi"><option value="yaja">야자시(기본)</option><option value="jeongja">정자시</option><option value="midnight">자정 기준</option></select></label>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="submit" id="go">사주 풀기</button><span class="err" id="err" role="alert"></span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="submit" id="go">사주 풀기</button><button type="button" class="ghost" id="save-me" hidden>내 사주로 저장</button><span id="me-msg" class="muted" role="status"></span><span class="err" id="err" role="alert"></span></div>
     </form>
   </section>
 
@@ -428,8 +428,37 @@ footer { font-size: 13px; color: var(--muted); }
   }
   $("#f").addEventListener("submit", run);
 
+  // ── 내 사주: 보는 사람마다 자기 입력을 비공개로 저장(data/users/<id>/profile) ──
+  const FIELDS = ["date", "cal", "sex", "place", "t1", "t2", "mbti", "zishi"];
+  const formState = () => { const o = {}; FIELDS.forEach((k) => { o[k] = $("#" + k).value; }); o.tmode = document.querySelector('input[name="tmode"]:checked').value; return o; };
+  const applyForm = (o) => { FIELDS.forEach((k) => { if (o[k] !== undefined) $("#" + k).value = o[k]; }); const r = document.querySelector(`input[name="tmode"][value="${o.tmode}"]`); if (r) r.checked = true; setTimeMode(); };
+  async function profileRef() {
+    const [db, user] = await Promise.all([getDb(), getUser()]);
+    const uid = user ? await user.id() : null;
+    return db && uid ? db.doc("data/users/" + uid + "/profile") : null;
+  }
+  async function loadMine() {
+    try {
+      const ref = await profileRef(); if (!ref) return;
+      $("#save-me").hidden = false;
+      const snap = await ref.get();
+      if (snap.exists && snap.data().form) {
+        applyForm(snap.data().form); $("#example-tag").hidden = true; $("#mine-tag").hidden = false; run();
+      }
+    } catch (e) { /* 저장소를 못 쓰는 화면이면 예시로 계속 */ }
+  }
+  $("#save-me").addEventListener("click", async () => {
+    const msg = $("#me-msg"); msg.textContent = "저장하는 중…";
+    try {
+      const ref = await profileRef(); if (!ref) throw new Error();
+      await ref.set({ form: formState(), savedAt: new Date().toISOString() });
+      $("#example-tag").hidden = true; $("#mine-tag").hidden = false;
+      msg.textContent = "저장했어요. 다음에 열면 이 사주가 바로 보여요. 나만 볼 수 있어요.";
+    } catch (e) { msg.textContent = "이 화면에서는 저장할 수 없어요."; }
+  });
+
   Promise.all([fetch("data/calendar.json").then((r) => r.json()), fetch("data/content-ko.json").then((r) => r.json())])
-    .then(([cal, content]) => { E = SajuEngine.create(cal); C = content; run(); })
+    .then(([cal, content]) => { E = SajuEngine.create(cal); C = content; run(); loadMine(); })
     .catch(() => { $("#out").innerHTML = `<p class="err">만세력 데이터를 불러오지 못했어요. 새로고침해 주세요.</p>`; });
 })();
 </script>
