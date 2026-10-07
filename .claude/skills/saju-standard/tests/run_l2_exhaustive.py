@@ -42,6 +42,13 @@ def check(stems, branches, r):
         errs.append("score 범위")
     if gk["name"] not in I.SANGSIN:
         errs.append("격 이름")
+    if gk["status"] not in I.GYEOK_STATUS:
+        errs.append("격 상태값")
+    dm_ = S.STEM_EL[stems[2]]
+    vis_groups = [I.group_of(dm_, S.STEM_EL[s]) for i, s in enumerate(stems) if s is not None and i != 2]
+    if gk["name"] == "양인격" and "관성" not in vis_groups and not ("재성" in vis_groups and "식상" in vis_groups) \
+            and gk["status"] != "파격":
+        errs.append("양인무관살인데 파격 아님")
     if (gk["name"] == "건록격") != (branches[1] == I.ROK[stems[2]]):
         errs.append("건록격 판정")
     if jh["priority"] and branches[1] not in (0, 1, 6, 7):

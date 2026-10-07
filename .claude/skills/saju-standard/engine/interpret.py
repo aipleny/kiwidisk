@@ -60,11 +60,12 @@ for _k, _v in _JOHU_CELLS.items():
     JOHU[S.STEMS.index(_k[0])][S.BRANCHES.index(_k[1])] = _v["stems"]
     JOHU_COND[S.STEMS.index(_k[0])][S.BRANCHES.index(_k[1])] = _v["conditional"]
 
-SANGSIN = {  # [자평진전] 격국별 상신(相神) 십신군
+SANGSIN = {  # [자평진전] 격국별 상신(相神) 십신군 — 원전 대조(references/gyeokguk-ziping.json)
     "정관격": ["재성", "인성"], "편관격": ["식상", "인성"], "정재격": ["식상", "관성"], "편재격": ["식상", "관성"],
-    "정인격": ["관성"], "편인격": ["관성", "재성"], "식신격": ["재성"], "상관격": ["재성", "인성"],
-    "건록격": ["관성", "재성"], "양인격": ["관성"], "월겁격": ["관성", "재성"],
+    "정인격": ["관성", "비겁"], "편인격": ["관성", "비겁"], "식신격": ["재성", "비겁"], "상관격": ["재성", "인성"],
+    "건록격": ["관성", "재성", "식상"], "양인격": ["관성"], "월겁격": ["관성", "재성", "식상"],
 }
+GYEOK_STATUS = ("성격", "성격(하)", "대기", "파격", "미정")  # 성격(하)=격은 서나 격이 낮음, 대기=带忌(성격이나 꺼리는 것이 섞임)
 
 
 def _chart(stems, branches):
@@ -144,74 +145,203 @@ def johu(stems, branches):
             "basis": f"[궁통보감] {S.STEMS[ds]}일간 {S.BRANCHES[mb]}월 → {'·'.join(need_stems)}"}
 
 
-def gyeokguk(stems, branches):
-    """[자평진전] 월지 기준 격국 + 성패."""
-    ds, dm, items = _chart(stems, branches)
+def gyeokguk(stems, branches, st=None):
+    """[자평진전] 취격 + 성패(救应·带忌·刑冲). 근거 인용은 references/gyeokguk-ziping.json."""
+    ds, dm, _ = _chart(stems, branches)
     mb = branches[1]
-    visible = [s for i, s in enumerate(stems) if s is not None and i != 2]
-    vis_groups = [group_of(dm, S.STEM_EL[s]) for s in visible]
-    vis_gods = [S.ten_god(ds, s) for s in visible]
+    vis = [(i, s) for i, s in enumerate(stems) if s is not None and i != 2]
+    vis_stems = [s for _, s in vis]
 
+    def merged(i, s):  # 다른 천간(일간 제외)과 오합되어 묶였는가
+        return any(j != i and frozenset((s, t)) in S.STEM_HAP for j, t in vis)
+
+    def god_free(name):  # 해당 십신이 투출해 있고 합으로 묶이지 않음
+        return any(S.ten_god(ds, s) == name and not merged(i, s) for i, s in vis)
+
+    def god_any(name):
+        return any(S.ten_god(ds, s) == name for _, s in vis)
+
+    def grp(name, free=True):
+        return any(group_of(dm, S.STEM_EL[s]) == name and (not free or not merged(i, s)) for i, s in vis)
+
+    def grp_count(name):
+        return sum(group_of(dm, S.STEM_EL[s]) == name for _, s in vis)
+
+    present = [b for b in branches if b is not None]
+    # ── 취격 ──
+    also = []
     if mb == ROK[ds]:
         name, basis = "건록격", f"월지 {S.BRANCHES[mb]} = 일간 건록"
     elif ds in YANGIN and mb == YANGIN[ds]:
         name, basis = "양인격", f"월지 {S.BRANCHES[mb]} = 일간 양인"
-    elif S.STEM_EL[S.main_hidden(mb)] == dm:
-        name, basis = "월겁격", f"월지 정기가 일간과 같은 오행"
     else:
-        hidden = [h for h in (S.HIDDEN[mb][2], S.HIDDEN[mb][1], S.HIDDEN[mb][0]) if h is not None]
-        out = next((h for h in hidden if h in visible and S.STEM_EL[h] != dm), None)
-        pick = out if out is not None else S.HIDDEN[mb][2]
-        god = S.ten_god(ds, pick)
-        name = god + "격"
-        basis = f"월지 {S.BRANCHES[mb]} 지장간 {S.STEMS[pick]}" + (" 투출" if out is not None else " 정기(미투출)")
+        name = None
+        for sang, wang, go, el in S.SAMHAP:  # 会支: 월지를 포함한 삼합이 온전하면 격이 변한다
+            if mb in (sang, wang, go) and {sang, wang, go} <= set(present) and el != dm:
+                name = S.ten_god(ds, S.main_hidden(wang)) + "격"
+                basis = f"월지 {S.BRANCHES[mb]} 포함 {''.join(S.BRANCHES[x] for x in (sang, wang, go))} 삼합 {S.ELEMENTS_KO[el]}국으로 변격"
+                break
+        if name is None:
+            order = [h for h in (S.HIDDEN[mb][2], S.HIDDEN[mb][1], S.HIDDEN[mb][0]) if h is not None]
+            out = [h for h in order if h in vis_stems]
+            pick = out[0] if out else S.HIDDEN[mb][2]
+            name = "월겁격" if S.STEM_EL[pick] == dm else S.ten_god(ds, pick) + "격"
+            basis = f"월지 {S.BRANCHES[mb]} 지장간 {S.STEMS[pick]}" + (" 투출" if out else " 정기(미투출)")
+            also = [S.ten_god(ds, h) + "격" for h in out[1:] if S.STEM_EL[h] != dm]
 
-    has = lambda g: g in vis_groups  # noqa: E731
-    god_has = lambda g: g in vis_gods  # noqa: E731
+    # ── 성패 ──
     status, reason = "성격", []
     if name == "정관격":
-        if god_has("상관") and not has("인성"):
-            status, reason = "파격", ["상관견관(인성 구제 없음)"]
-        elif god_has("편관"):
+        if god_free("편관"):
             status, reason = "파격", ["관살혼잡"]
+        elif god_free("상관"):
+            if grp("인성"):
+                status, reason = ("파격", ["상관견관, 인성으로 구했으나 재가 인을 깨뜨림"]) if grp("재성") else ("성격", ["상관견관을 인성이 구함(官逢伤而透印以解之)"])
+            else:
+                status, reason = "파격", ["상관견관"]
+        elif any(S.ten_god(ds, s) == "정관" and merged(i, s) for i, s in vis):
+            status, reason = "대기", ["정관이 합으로 묶임"]
+        elif grp("재성") or grp("인성"):
+            reason = ["재·인이 관을 돕고 지킴(官喜透财以相生, 生印以护官)"]
         else:
-            reason = ["재·인 보좌" if (has("재성") or has("인성")) else "관 단독"]
+            status, reason = "성격(하)", ["고관(孤官): 재·인 보좌 없음"]
+        if god_any("편관") and not god_free("편관"):
+            reason.append("편관이 합으로 제거됨(合杀留官)")
     elif name == "편관격":
-        if has("식상") or has("인성"):
-            reason = ["식신제살" if god_has("식신") or god_has("상관") else "살인상생"]
-        elif has("재성"):
-            status, reason = "파격", ["재생살(제화 없음)"]
+        yangin_branch = ds in YANGIN and YANGIN[ds] in present
+        if god_free("정관"):
+            status, reason = "대기", ["관살혼잡: 관이나 살 중 하나를 걸러야 맑아짐(取清)"]
+        elif grp("식상"):
+            if grp("인성") and not grp("재성"):
+                status, reason = "대기", ["식신제살 위에 인성이 식신을 누름(七煞逢食制而又逢印)"]
+            else:
+                reason = ["식신제살"]
+        elif grp("인성"):
+            status, reason = ("파격", ["살인상생인데 재가 인을 깨뜨림"]) if grp("재성") else ("성격", ["살인상생"])
+        elif yangin_branch:
+            reason = ["양인이 칠살을 대적(用刃当煞)"]
+        elif grp("재성"):
+            status, reason = "파격", ["칠살이 재를 만나 제어 없음(七煞逢财无制)"]
         else:
-            status, reason = "미정", ["제화 미비"]
+            status, reason = "미정", ["제화 없음"]
     elif name in ("정재격", "편재격"):
-        if vis_groups.count("비겁") >= 2 and not (has("식상") or has("관성")):
-            status, reason = "파격", ["군겁쟁재"]
+        if god_free("편관"):
+            status, reason = ("성격", ["재투칠살을 식신이 제어"]) if grp("식상") else ("파격", ["재투칠살(财透七煞)"])
+        elif grp_count("비겁") >= 2:
+            if grp("식상"):
+                reason = ["재봉겁을 식상이 화함(财逢劫而透食以化之)"]
+            elif grp("관성"):
+                reason = ["재봉겁을 관이 제어(生官以制之)"]
+            else:
+                status, reason = "파격", ["군겁쟁재(财轻比重)"]
+        elif grp("관성") and grp("식상"):
+            status, reason = "대기", ["재왕생관에 식상이 섞임(露食则杂)"]
         else:
-            reason = ["식상생재" if has("식상") else "재왕생관" if has("관성") else "재 단독"]
+            reason = ["식상생재" if grp("식상") else "재왕생관" if grp("관성") else "재 단독"]
     elif name in ("정인격", "편인격"):
-        if has("재성") and not has("관성"):
-            status, reason = "파격", ["재극인"]
+        if st is not None and st["strong"] and god_free("편관"):
+            status, reason = "파격", ["신강 인중에 칠살 투출(身强印重而透煞)"]
+        elif grp("재성"):
+            if grp("비겁") or not grp("재성", free=True) or grp_count("인성") > grp_count("재성"):
+                reason = ["재가 인을 치나 겁재·합·인다로 구함(印逢财而劫财以解之)"]
+            elif grp("관성"):
+                status, reason = "성격(하)", ["재극인을 관이 통관"]
+            else:
+                status, reason = "파격", ["재극인"]
+        elif grp("관성"):
+            reason = ["관인상생(印喜官煞以相生)"]
+        elif grp("비겁"):
+            reason = ["겁재가 인을 보호(劫才以护印)"]
         else:
-            reason = ["관인상생" if has("관성") else "인 단독"]
+            status, reason = "성격(하)", ["인 단독"]
     elif name == "식신격":
-        if god_has("편인") and not has("재성"):
-            status, reason = "파격", ["효신탈식(도식)"]
+        if grp("인성"):
+            if grp("재성"):
+                reason = ["재가 인을 제어해 식신을 보호(生财以护食)"]
+            elif god_free("편관"):
+                reason = ["효신을 만났으나 칠살을 취해 격을 이룸(就煞以成格)"]
+            else:
+                status, reason = "파격", ["효신탈식(정인·편인 모두 夺食)"]
+        elif grp("재성") and god_free("편관"):
+            status, reason = "파격", ["식신생재에 칠살 투출(生财露煞)"]
+        elif god_free("편관"):
+            reason = ["식신제살"]
+        elif grp("재성"):
+            reason = ["식신생재"]
         else:
-            reason = ["식신생재" if has("재성") else "식신 단독"]
+            status, reason = "성격(하)", ["식신 단독"]
     elif name == "상관격":
-        if god_has("정관") and not has("인성"):
-            status, reason = "파격", ["상관견관"]
+        jinsu = ds in (6, 7) and mb in (11, 0)
+        if god_free("정관"):
+            if jinsu:
+                reason = ["금수상관은 관을 기뻐함(金水独宜)"]
+            elif grp("인성"):
+                status, reason = "성격(하)", ["상관견관을 인성이 구함"]
+            else:
+                status, reason = "파격", ["상관견관(伤官非金水而见官)"]
+        elif grp("재성") and god_free("편관"):
+            status, reason = "파격", ["상관생재에 칠살 투출"]
+        elif grp("인성") and grp("재성"):
+            status, reason = "대기", ["상관패인에 재가 섞임"]
+        elif grp("재성"):
+            reason = ["상관생재(生财以化伤)"]
+        elif grp("인성"):
+            reason = ["상관패인(佩印以制伏)"]
+        elif god_free("편관"):
+            reason = ["상관가살"]
         else:
-            reason = ["상관생재" if has("재성") else "상관패인" if has("인성") else "상관 단독"]
-    else:  # 건록·양인·월겁
-        if has("관성"):
-            reason = ["관살로 제어"]
-        elif has("재성") or has("식상"):
-            reason = ["재·식상으로 설기"]
+            status, reason = "미정", ["재·인 없음"]
+    elif name == "양인격":
+        if not grp("관성"):
+            if grp("재성") and grp("식상"):
+                status, reason = "성격(하)", ["관살 없이 재와 식상으로 씀(财根深而用伤食)"]
+            else:
+                status, reason = "파격", ["양인무관살(阳刃无官煞, 刃格败也)"]
+        elif grp("식상") and not grp("인성"):
+            status, reason = "파격", ["관살을 식상이 제거"]
         else:
-            status, reason = "미정", ["제어·설기 부족"]
+            reason = ["관살이 양인을 제어(阳刃喜官煞以制伏)"]
+    else:  # 건록격·월겁격
+        if god_free("정관") and god_free("편관"):
+            status, reason = "대기", ["관살혼잡: 取清 필요"]
+        elif god_free("정관"):
+            if god_free("상관"):
+                status, reason = "파격", ["용관에 상관 투출"]
+            elif grp("재성") or grp("인성"):
+                reason = ["용관에 재·인 보좌(透官而逢财印)"]
+            else:
+                status, reason = "성격(하)", ["고관"]
+        elif god_free("편관"):
+            if grp("식상"):
+                reason = ["용살에 제복(透煞而遇制伏)"]
+            elif grp("재성"):
+                status, reason = "파격", ["용살에 재가 살을 생함"]
+            else:
+                status, reason = "미정", ["칠살 제복 필요"]
+        elif grp("재성"):
+            status, reason = ("성격", ["용재에 식상(禄劫用财, 须带食伤)"]) if grp("식상") else ("성격(하)", ["용재에 식상 없음"])
+        elif grp("식상"):
+            reason = ["식상 설기(亦为秀气)"]
+        elif grp("인성"):
+            status, reason = "파격", ["재관 없이 인만 투출"]
+        else:
+            status, reason = "미정", ["재·관·식상 없음"]
+
+    # 월령 형충 (辰戌·丑未는 冲动이라 제외)
+    clash = [i for i in (0, 2, 3) if branches[i] is not None and (branches[i] - mb) % 12 == 6]
+    if clash and frozenset((mb, branches[clash[0]])) not in (frozenset((4, 10)), frozenset((1, 7))):
+        others = [b for i, b in enumerate(branches) if b is not None and i != 1]
+        rescued = any(frozenset((mb, b)) in S.YUKHAP for b in others) or any(
+            mb in (sg, wg, gg) and wg in {mb, *others} and len({sg, wg, gg} & {mb, *others}) >= 2
+            and any(b in (sg, wg, gg) for b in others) for sg, wg, gg, _ in S.SAMHAP)
+        cb = S.BRANCHES[branches[clash[0]]] + S.BRANCHES[mb]
+        if rescued:
+            reason.append(f"월령 충({cb})을 합이 풀어 줌(三合六合可以解之)")
+        elif status in ("성격", "성격(하)", "대기"):
+            status = "파격"
+            reason.append(f"월령 충({cb})으로 파격(刑冲用神, 尤为破格)")
     sangsin = SANGSIN[name]
-    return {"name": name, "basis": basis, "status": status, "reason": reason, "sangsin_groups": sangsin,
+    return {"name": name, "basis": basis, "also": also, "status": status, "reason": reason, "sangsin_groups": sangsin,
             "sangsin_elements": [S.ELEMENTS_KO[group_el(dm, g)] for g in sangsin], "tag": "[자평진전]"}
 
 
@@ -336,7 +466,7 @@ def natal_relations(stems, branches, pillar60):
 def interpret_core(stems, branches):
     st = strength(stems, branches)
     jh = johu(stems, branches)
-    gk = gyeokguk(stems, branches)
+    gk = gyeokguk(stems, branches, st)
     ys = yongsin(stems, branches, st, jh, gk)
     return {"strength": st, "johu": jh, "gyeokguk": gk, "yongsin": ys}
 

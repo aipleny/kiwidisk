@@ -1,0 +1,230 @@
+{
+ "A": {
+  "status": "partially supported",
+  "quotes": [
+   "八字用神,专求月令,以日干配月令地支",
+   "假使寅月为提,不透甲而透丙,则如知府不临郡,而同知得以作主",
+   "故建禄与月劫,可同一格,不必加分",
+   "禄前一位,惟五阳有之",
+   "透干会取其清者用之,杂而不杂也",
+   "甲生辰月,透戊则用偏财,透癸则用正印,透乙则用月劫是也",
+   "一透则一用,兼透则兼用,透而又会,则透与会并用",
+   "如甲生辰月,逢申与子会局,则用水印是也",
+   "故若丁生亥月,本为正官,支全卯未,则化为印",
+   "若戊土不透,即辰戌相冲,财格犹不甚清也",
+   "况四库之中,虽五行俱有,而终以土为主",
+   "皆以透干支,别取财官煞食为用",
+   "丙生申月,逢壬化煞,而又透戊,则食神能制煞生财,仍为财格"
+  ],
+  "explanation": "Supported: 月令-only 取格; 本气 has priority when 透, and a 透 中/余气 takes over only when 本气 is not 透 (寅月 透丙 example), which matches our 本气->中气->余气 first-透 order; 建禄/月劫 one family; 阳刃 only for yang stems; fallback to 本气 土 in 四库 when nothing 透 (财格 '犹不甚清'). Gaps: (1) 会支/三合: a full 三合 with the 月支 changes the 格 (丁亥+卯未 -> 印; 甲辰+申子 -> 水印); we ignore 会局. (2) 四库: text lists 透乙 for 甲辰 as 月劫, while we skip day-element stems and fall back to 本气. (3) 兼透 = 兼用 (multiple 格 elements); we pick one. (4) 建禄/月劫 is not itself a 用神; the text says to take 财官煞食 from elsewhere, so the label is fine but the 用 must be chosen from 透干. (5) A 透 中/余气 that is itself 制 by another 透 stem may not replace the 本气 (丙申: 壬 透 but 戊 制 -> still 财格). (6) 戊/己 day in 辰戌丑未: 本气 土 = day element, so we return 月劫格; per the 杂气 rule a 透 中/余气 (癸/乙/辛/丁 etc.) should be used.",
+  "proposed_fix": "1) Before the hidden-stem scan, if the 月支 forms a complete 三合 (or 三会) with other branches, use the combined element's 十神 as the 格 (cite 丁生亥月...支全卯未,则化为印). 2) If the month is 辰戌丑未 and the day stem is 戊/己, do not return 月劫格 directly; run the 透干 scan over 中/余气 first, then fall back to 月劫. 3) Optional: in 四库 months, allow a 透 day-element 余气 to give 月劫格 (甲辰透乙). 4) Optional: report a secondary 格 (兼用) when two non-day-element hidden stems are both 透. 5) Optional: if the chosen 中/余气 stem is 克ed by another 透 stem and the 本气 is not, keep the 本气 格."
+ },
+ "B.正官": {
+  "status": "partially supported",
+  "quotes": [
+   "如官逢财印,又无刑冲破害,官格成也",
+   "官逢伤克刑冲,官格败也",
+   "如官逢伤而透印以解之,杂煞而合煞以清之,刑冲而会合以解之",
+   "然而遇伤在于佩印,混煞贵乎取清",
+   "李参政命,庚寅、乙酉、甲子、戊辰,甲用酉官,庚金混杂,乙以合之,合煞留官",
+   "至于官格透伤用印者,又忌⻅财,以财能去印",
+   "故甲透酉官,透丁合壬,是谓合伤存官",
+   "如正官逢财而又逢伤;透官而又逢合",
+   "仍以孤官无辅论,所以不上七品",
+   "刑冲用神,尤为破格"
+  ],
+  "explanation": "伤官 without 印 -> 败 and 财/印 -> 成 are supported. Missing: (a) 官杀混杂 is not automatically 败. It is rescued if the 七杀 is 合 away (合煞留官, e.g. 乙 合 庚 for 甲 day). (b) 伤官 is also neutralised if it is 合 away (丁壬合 '合伤存官'). (c) 伤官 + 印 + 财 all visible: 财 removes the rescuing 印, so it is 带忌/败 unless 财 is itself 合 (范太傅 case). (d) The 正官 stem 合 away (透官而又逢合) is 带忌. (e) 刑冲 of the 月支 breaks the 格 unless 会合 resolves it; we never check branch clashes. (f) 孤官无辅 (no 财 and no 印) is low-grade but not 败.",
+  "proposed_fix": "1) 七杀 visible -> 败 unless some 透 stem 五合s the 七杀 stem (合煞留官). 2) 伤官 visible -> 败 unless 印 visible OR some 透 stem 五合s the 伤官 stem. If 伤官 + 印 + 财 are all visible and 财 is not 合ed -> 败 ('又忌见财'). 3) If the 正官 stem is 五合ed by another stem -> 带忌 (downgrade 成 to '성격(带忌)'). 4) If the 月支 is 六冲ed by year/day/hour branch and no 六合/三合 resolves it -> 败. 5) Label 'no 财 and no 印' as 성격(孤官, 低)."
+ },
+ "B.七杀": {
+  "status": "partially supported",
+  "quotes": [
+   "身强七煞逢制,煞格成也",
+   "七煞逢财无制,七煞格败也",
+   "七煞逢食制而又逢印",
+   "煞用食制,不要露财透印,以财能转食生煞,而印能去食护煞也",
+   "有七煞用印者,印能护煞,本非所宜,而印有情,便为贵格",
+   "而财以去印存食,便为贵格",
+   "有煞而杂官者,或去官,或去煞,取清则贵",
+   "煞无食制而用刃当煞",
+   "七煞喜食神以制伏,忌财印以资扶",
+   "若财用煞印而印独,财煞并透,非特不贵,亦不富也"
+  ],
+  "explanation": "七杀 with 财 is NOT necessarily 败. The text's 败 condition is '逢财无制': 财 is harmless or even useful when 食神 制 the 杀 (财先食后), or when 财 removes an 印 that blocks the 食 (财以去印存食). Our rule makes 财 with no 食伤/印 败, which matches '无制'. Problems: (a) 食伤 + 印 together is 带忌 ('煞逢食制而又逢印', where 印 去食护煞), but we return 成. In that case 财 is the rescue (去印存食). (b) 印 alone is an acceptable but secondary path (用印 needs 有情), and 印 + 财 with no 食 is 败 (财 breaks the 印; '财煞并透...不富'), but we return 成. (c) 官杀混杂 needs 取清 (去官/去煞); we ignore 正官. (d) 阳刃 can 当煞 when there is no 食 (yang day with 刃 in branches). (e) 成 also requires 身强, which we do not check.",
+  "proposed_fix": "1) 制 = 食神/伤官 visible. 化 = 印 visible. 2) If 制 and 印 are both visible: 带忌 unless 财 is visible (去印存食) -> 成. 3) If 制 is visible and 印 is not: 成 (财 allowed). 4) If 印 is visible, 制 is not, and 财 is visible: 败 (财破印, 杀无制). 5) If only 印 is visible: 成 (杀印相生). 6) If 财 is visible with no 制 and no 印: 败. 7) If 正官 is also visible: 败 unless the 官 or the 杀 is 合ed (取清). 8) If there is no 制/化 but the yang day has its 阳刃 in a branch: 成 (用刃当煞). Otherwise: 미정. Optionally require strength ≥ 中 for 成."
+ },
+ "B.财": {
+  "status": "partially supported",
+  "quotes": [
+   "财生官旺,或财逢食生而身强带比,或财格透印而位置妥贴",
+   "财轻比重,财透七煞,财格败也",
+   "财逢劫而透食以化之,生官以制之,逢煞而食神制煞以生财,或存财而合煞",
+   "财旺生官,露食则杂,食能破格也",
+   "如正官逢财而又逢伤",
+   "有财旺生官者,身强而不透伤官,不混七煞,贵格也",
+   "有财带七煞者,或合煞存财,或制煞生财,皆贵格也",
+   "孤财不贵,佩印帮身"
+  ],
+  "explanation": "比劫 heavy without 食伤/官 -> 败 is supported ('财轻比重'; 救 = 透食/生官). The '≥2 visible 比劫' threshold is a proxy for 比重. Missing: (a) 财透七煞 is an explicit 败, rescued only by 食神制煞 or 合煞. (b) 财旺生官 with 伤官/食 also visible is 带忌/杂. (c) 财 + 印 is a valid 成 path (财格佩印) only when they do not clash. (d) 财 alone (孤财) is low-grade, not 败.",
+  "proposed_fix": "1) Add: 七杀 visible -> 败 unless 食伤 visible (制煞生财) or the 杀 stem is 五合ed (合煞存财). 2) Add: 正官 + 伤官 both visible -> 带忌 (downgrade 成). 3) Keep the 比劫 rule. Optionally compare 比劫 strength against 财 strength instead of a count of 2. 4) Add reason '财格佩印' when 印 is visible and there is no 败."
+ },
+ "B.印": {
+  "status": "partially supported",
+  "quotes": [
+   "印轻逢煞,或官印双全,或身印两旺而用食伤泄气,或印多逢财而财透根轻",
+   "印轻逢财,或身强印重而透煞,印格败也",
+   "印逢财而劫财以解之,或合财而存印",
+   "印透食以泄气,而又遇财露;透煞以生印,而又透财",
+   "若印轻财重,又无劫财以救,则为贪财破印",
+   "印喜官煞以相生,劫才以护印",
+   "印绶喜其生身,正偏同为美格",
+   "若身印并重而用七煞,非孤则贫矣"
+  ],
+  "explanation": "财破印 is supported, but the text's rescue is 劫财 (比劫 visible) or 合财, not 官. Also 印多/印重 with a light 财 is itself 成. 官 is a 成 path (官印双全), and the 运 chapter lets 官露印重 tolerate 财, so 官 as a rescue is only weakly supported. Missing: (a) 身强印重 + 七杀 -> 败. (b) 印+食伤+财 and 印+杀+财 -> 带忌. (c) 正印 and 偏印 must be treated identically (正偏同为美格).",
+  "proposed_fix": "1) 财 visible -> 败 unless (比劫 visible) OR (财 stem 五合ed) OR (印 count > 财 count, i.e. 印多财轻) OR (官 visible, weaker rescue). 2) If 七杀 visible AND the day master is strong AND 印 count ≥ 2 -> 败 ('身强印重而透煞'). 3) If (食伤 or 七杀) and 财 are visible together with 印 -> 带忌. 4) Same rule set for 正印格/偏印格."
+ },
+ "B.食神": {
+  "status": "partially supported",
+  "quotes": [
+   "食神生财,或食带煞而无财,弃食就煞而透印,食格成也",
+   "食神逢枭,或生财露煞,食神格败也",
+   "食逢枭而就煞以成格,或生财以护食",
+   "更有印来夺食,透财以解",
+   "食神虽逢正印,亦谓夺食",
+   "食神带煞印而又逢财",
+   "而财先煞后,食以间之,而财不能党煞,亦可就贵",
+   "更有食神合煞存财,最为贵格"
+  ],
+  "explanation": "枭神夺食 rescued by 财 is supported. Missing: (a) 正印 also 夺食, but we check only 偏印. (b) A second rescue for 枭: 就煞, i.e. 七杀 + 印 visible makes 煞印格 成. (c) 食神 + 财 + 七杀 ('生财露煞') -> 败, unless 财 and 杀 are separated by the 食 (财先煞后, positional) or the 杀 is 合ed. (d) 食+杀+印+财 -> 带忌. (e) 食带煞而无财 -> 成. (f) 夏火 调候 exception (透印不碍) not modelled.",
+  "proposed_fix": "1) Replace god_has('편인') with has('인성'). 2) 印 visible -> 败 unless 财 visible OR 七杀 visible (就煞透印). 3) 七杀 visible AND 财 visible -> 败 unless the 七杀 is 合ed, or the 食 stem sits between the 财 and 杀 stems by pillar order. 4) 七杀 visible, 财 not visible -> 成 '食神制煞'. 5) 七杀 + 印 + 财 -> 带忌."
+ },
+ "B.伤官": {
+  "status": "partially supported",
+  "quotes": [
+   "伤官生财,或伤官佩印而伤官旺,印有根,或伤官旺、身主弱而透煞印",
+   "或伤官带煞而无财,伤官格成也",
+   "伤官非金水而⻅官,或生财生带煞,或佩印而伤轻身旺,伤官格败也",
+   "伤官生财透煞而煞逢合",
+   "有伤官用官者,他格不用,金水独宜,然要财印为辅",
+   "化伤为财,伤非其伤,作财旺生官而不作伤官⻅官",
+   "佩印而印又遭伤,透财而逢煞",
+   "伤官佩印,运行官煞为宜"
+  ],
+  "explanation": "伤官见官 -> 败 is supported, but the text's exemption is 金水伤官 (庚/辛 day in 亥/子 month, 调候) and 化伤为财 by 会局, not '印 present'. 印 is the rescue in 正官格 (官逢伤而透印), and 佩印 tolerates 官 only in 运. So our 印 rescue is a weak extrapolation. Missing: (a) 生财 + 带煞 (伤 + 财 + 七杀) -> 败 unless the 煞 is 合ed. (b) 伤官带煞 无财 -> 成. (c) 佩印 + 财 visible -> 带忌 (印遭伤). (d) 佩印 needs 伤旺/身弱 (伤轻身旺 -> 败).",
+  "proposed_fix": "1) 正官 visible -> 败 unless (day stem 庚/辛 and month 亥/子: 金水伤官), or the month branch is in a 三合 that turns the 伤 into 财 (化伤为财), or the 官 stem is 合ed. Keep 印 only as a secondary rescue. 2) 财 + 七杀 visible -> 败 unless the 七杀 stem is 五合ed. 3) 七杀 visible, 财 not visible -> 成 '伤官带煞' (or '伤官用煞印' if 印 is visible). 4) 印 + 财 both visible -> 带忌, unless they are separated (non-adjacent pillars)."
+ },
+ "B.阳刃": {
+  "status": "contradicted (partially)",
+  "quotes": [
+   "阳刃透官煞而露财印,不⻅伤官",
+   "阳刃无官煞,刃格败也",
+   "阳刃喜官煞以制伏,忌官煞之俱无",
+   "阳刃用官煞带伤食,而重印以护之",
+   "阳刃用官,透刃不虑;阳刃露煞,透刃无成",
+   "更若阳刃用财,格所不喜,然财根深而用伤食,以转刃生财",
+   "倘或财煞并透露,则犯去印存煞之忌"
+  ],
+  "explanation": "阳刃格 needs 官杀 specifically. Without 官杀 the text says 败 ('阳刃无官煞,刃格败也'), not 成 via 财/食伤 and not 미정. The only fallback is 财 with 伤食 together (转刃生财, rich but 'not liked'). With 官杀: 成 is best with 财/印 support and no 伤官. 伤食 + 官杀 -> 败 unless 印 is heavy. A 七杀 that is 合ed by a 透 刃 stem (e.g. 丙 day, 壬 杀, 丁 透) loses its function ('透刃无成').",
+  "proposed_fix": "1) No 官杀 visible: 败, except 财 AND 食伤 both visible -> 成(low: '阳刃用财, 转刃生财'). 2) 官杀 visible: 成. If 伤官/食神 is also visible -> 败 unless 印 is visible (重印护之). If the only 七杀 stem is 五合ed by a 劫财 stem -> 败 (透刃无成). Add reason '财印相随' when 财 or 印 is visible. 3) Split 阳刃 from the shared 建禄/月劫 branch in the code."
+ },
+ "B.建禄月劫": {
+  "status": "partially supported",
+  "quotes": [
+   "建禄月劫,透官而逢财印,透财而逢食伤,透煞而遇制伏",
+   "建禄月劫,无财官,透煞印,建禄月劫之格败也",
+   "建禄月劫用官,遇伤而伤被合,用财带煞而煞被合",
+   "禄格用官,干头透出为奇,又要财印相随,不可孤官无辅",
+   "禄劫用财,须带食伤",
+   "禄劫用煞,必须制伏",
+   "无财官而用伤食,泄其太过,亦为秀气",
+   "更有禄劫而官煞竞出,必取清方为贵格"
+  ],
+  "explanation": "Using 官杀/财/食伤 is supported, but each 用 has a required partner that we do not check: 官 needs 财 or 印 (孤官无辅 is small); 财 needs 食伤; 煞 needs 制 (食伤). Explicit 败: no 财 and no 官, while 煞/印 are visible. 伤食 alone with no 财官 is 成 (秀气). 官+伤 is 败 unless the 伤 is 合ed. 财+煞 needs the 煞 to be 合ed. 官煞竞出 needs 取清.",
+  "proposed_fix": "1) 正官 visible: 成 if 财 or 印 is visible, else 성격(孤官, 低). If 伤官 is visible and not 合ed -> 败. 2) 七杀 visible (no 正官): 成 if 食伤 visible. Else 败 if 财 is visible and the 杀 is not 合ed. Else 미정. 3) 正官 + 七杀 both visible: 败 unless one of them is 合ed or 制ed. 4) 财 (no 官杀): 成 if 食伤 visible, else 성격(低, 富不贵). 5) 食伤 only: 成 (秀气). 6) No 财/官 but 煞 or 印 visible -> 败. Nothing visible -> 미정."
+ },
+ "C.正官": {
+  "status": "supported",
+  "quotes": [
+   "官喜透财以相生,生印以护官",
+   "如官逢财生,则官为用,财为相"
+  ],
+  "explanation": "相 = 财, 印 matches the text.",
+  "proposed_fix": "None."
+ },
+ "C.七杀": {
+  "status": "partially supported",
+  "quotes": [
+   "七煞喜食神以制伏,忌财印以资扶",
+   "煞逢食制,则煞为用,食为相",
+   "有七煞用印者,印能护煞,本非所宜,而印有情,便为贵格"
+  ],
+  "explanation": "The primary 相 is 食神 (制). 印 is a secondary, conditional 相: 论用神 lists 印 among things to avoid, and 论偏官 accepts it only when 有情. 阳刃 (当煞) is also a possible 相.",
+  "proposed_fix": "Order the list as [식상, 인성] with 인성 marked secondary/conditional (valid only when there is no 食 to protect). Optionally add 비겁 (阳刃当煞) for yang days."
+ },
+ "C.财": {
+  "status": "supported",
+  "quotes": [
+   "财喜食神以相生,生官以护财",
+   "财旺生官,则财为用,官为相"
+  ],
+  "explanation": "食伤, 官 matches. The text also allows 印 (财格佩印) as a further 相.",
+  "proposed_fix": "Optional: append 인성 as a tertiary 相 ('财格透印而位置妥贴')."
+ },
+ "C.印": {
+  "status": "partially supported",
+  "quotes": [
+   "印喜官煞以相生,劫才以护印",
+   "印绶喜其生身,正偏同为美格,故财与印不分偏正",
+   "或身印两旺而用食伤泄气,或印多逢财而财透根轻"
+  ],
+  "explanation": "官煞 is the primary 相 for both 正印 and 偏印. 劫财 (比劫) is the named protector against 财. 食伤 (身印两旺) and 财 (印多) apply only conditionally. The text treats 正印 and 偏印 identically, so giving 偏印 an extra 财 while 正印 has only 官 is inconsistent.",
+  "proposed_fix": "Make 正印格 and 偏印格 identical: [관성, 비겁], with conditional extras 식상 (身印两旺) and 재성 (印多财轻)."
+ },
+ "C.食神": {
+  "status": "partially supported",
+  "quotes": [
+   "食喜身旺以相生,生财以护食",
+   "食神生财,或食带煞而无财,弃食就煞而透印"
+  ],
+  "explanation": "财 is the main 相. 比劫 (身旺) is the named 相生 support. 七杀 (食带煞无财) and 煞印 are alternative 成 paths.",
+  "proposed_fix": "[재성, 비겁]. Optionally add 관성(七杀, only when there is no 财)."
+ },
+ "C.伤官": {
+  "status": "supported",
+  "quotes": [
+   "伤官喜佩印以制伏,生财以化伤",
+   "或伤官旺、身主弱而透煞印"
+  ],
+  "explanation": "印, 财 matches. 煞印 is an additional path.",
+  "proposed_fix": "Optional: add 관성(七杀, with 印 and no 财)."
+ },
+ "C.建禄月劫": {
+  "status": "partially supported",
+  "quotes": [
+   "月劫喜透官以制伏,利用财而透食以化劫",
+   "禄劫用财,须带食伤",
+   "无财官而用伤食,泄其太过,亦为秀气"
+  ],
+  "explanation": "官, 财 are supported. 食伤 is required when 财 is the 用, and 伤食 can be the 用 when there are no 财官, so 식상 is missing.",
+  "proposed_fix": "[관성, 재성, 식상]."
+ },
+ "C.阳刃": {
+  "status": "supported",
+  "quotes": [
+   "阳刃喜官煞以制伏,忌官煞之俱无",
+   "刃宜伏制,官煞皆宜,财印相随,尤为贵显"
+  ],
+  "explanation": "Our group 관성 already covers 正官+七杀. The text adds 财/印 as followers (相随) of the 官煞.",
+  "proposed_fix": "Keep [관성]. Optionally append 재성, 인성 as secondary ('财印相随')."
+ },
+ "GLOBAL.刑冲": {
+  "status": "missing rule",
+  "quotes": [
+   "刑冲用神,尤为破格",
+   "八字支中,刑冲俱非美事,而三合六合,可以解之",
+   "而四墓土自为冲,乃冲动之冲,非冲克之冲也"
+  ],
+  "explanation": "No 格 currently checks whether the 月令 is clashed. The text treats 刑冲 of the 用神 (月支) as 破格 unless 会合 resolves it. 土 vs 土 clashes in 四库 are exempt.",
+  "proposed_fix": "For every 格: if 月支 is 六冲ed by another branch, not resolved by a 六合/三合 involving either branch, and the pair is not 辰戌/丑未 -> downgrade to 败 (or 带忌 for 建禄/月劫)."
+ }
+}
