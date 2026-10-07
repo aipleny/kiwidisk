@@ -635,7 +635,7 @@
       return list;
     }
 
-    return { compute, interpret, interpretCore, reading, hourCandidates, lunarToSolar, solarToLunar, cognitiveStack, parseType, parseIdentity,
+    return { compute, interpret, interpretCore, natalRelations, tenGod, parseGz, gzName, reading, hourCandidates, lunarToSolar, solarToLunar, cognitiveStack, parseType, parseIdentity,
       CITY_LON, consts: { STEMS, STEMS_KO, BRANCHES, BRANCHES_KO, EL_KO, STEM_EL, BRANCH_EL } };
   }
   return { create };

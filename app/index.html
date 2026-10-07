@@ -110,6 +110,26 @@ th { font-weight: 600; color: var(--muted); font-size: 12px; }
 .ok { color: var(--good); font-size: 14px; }
 .owner { border-style: dashed; }
 footer { font-size: 13px; color: var(--muted); }
+/* 함께 볼 사람 */
+.people { display: grid; gap: 10px; }
+.person { border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 8px; }
+.person .row { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+.xbtn { background: transparent; color: var(--muted); border: 1px solid var(--line); padding: 4px 10px; font-size: 13px; font-weight: 500; justify-self: end; }
+.rel-card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--surface); display: grid; gap: 8px; min-width: 0; }
+.mini { display: flex; gap: 6px; flex-wrap: wrap; font: 700 20px var(--font-display); }
+.mini span { border: 1px solid var(--line); border-radius: 8px; padding: 2px 8px; }
+/* 상담 */
+.chat { display: grid; gap: 12px; }
+.msg { border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
+.msg.user { background: var(--soft); justify-self: end; max-width: 88%; }
+.msg.ai { background: var(--surface); border: 1px solid var(--line); }
+.msg .who { font-size: 12px; color: var(--muted); font-weight: 600; }
+.md h1, .md h2, .md h3 { font: 700 16px/1.4 var(--font-body); margin: 6px 0 0; }
+.md p, .md ul, .md ol { margin: 0; }
+.md ul, .md ol { padding-left: 1.2em; display: grid; gap: 2px; }
+.md table { font-size: 13px; }
+.md .tw { overflow-x: auto; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 @media (max-width: 520px) { .rate-row { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
 @media (prefers-reduced-motion: no-preference) { .pillar { transition: transform .2s ease; } .pillar:hover { transform: translateY(-2px); } }
 </style>
@@ -118,15 +138,16 @@ footer { font-size: 13px; color: var(--muted); }
   <header class="top">
     <span class="eyebrow">만세력 · 궁통보감 · 자평진전 · MBTI</span>
     <h1>오행 MBTI 사주</h1>
-    <p class="muted">생년월일시를 넣으면 검증된 만세력으로 명식을 세우고, 고전의 규칙과 MBTI를 겹쳐 풀어 드려요. 계산은 이 화면 안에서만 이뤄져요. 「내 사주로 저장」을 누르면 다음부터 열자마자 내 풀이가 보이고, 저장한 정보는 나만 볼 수 있어요.</p>
+    <p class="muted">이름과 생년월일시, 궁금한 것을 적으면 검증된 만세력으로 명식을 세우고 고전의 규칙과 MBTI를 겹쳐 풀어 드려요. 함께 볼 사람을 더하면 궁합과 관계도 보고, 아래 상담 창에서 무엇이든 더 물어볼 수 있어요. 마지막에 풀이와 상담 내용을 보고서로 내려받을 수 있어요. 「내 사주로 저장」을 누르면 입력과 상담 기록이 나만 볼 수 있게 저장돼요.</p>
   </header>
 
   <section class="panel" aria-labelledby="in-h">
     <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap">
-      <h2 id="in-h">태어난 때</h2><span class="example-tag" id="example-tag">예시 입력이 채워져 있어요</span><span class="example-tag" id="mine-tag" hidden>내 사주</span>
+      <h2 id="in-h">상담 신청서</h2><span class="example-tag" id="example-tag">예시 입력이 채워져 있어요</span><span class="example-tag" id="mine-tag" hidden>내 사주</span>
     </div>
     <form id="f" novalidate>
       <div class="row">
+        <label for="name">이름 또는 호칭<input id="name" maxlength="20" placeholder="예: 김민지" autocomplete="off"></label>
         <label for="date">생년월일<input id="date" type="date" min="1901-01-01" max="2099-12-31" required></label>
         <label for="cal">달력<select id="cal"><option value="solar">양력</option><option value="lunar">음력</option><option value="leap">음력 윤달</option></select></label>
         <label for="sex">성별<select id="sex"><option value="">선택 안 함</option><option value="female">여성</option><option value="male">남성</option></select></label>
@@ -143,6 +164,9 @@ footer { font-size: 13px; color: var(--muted); }
         <label for="mbti">MBTI (선택)<input id="mbti" placeholder="예: ENFP 또는 ENFP-T" autocomplete="off" maxlength="6"></label>
         <label for="zishi">자시(밤 11시~1시) 학파<select id="zishi"><option value="yaja">야자시(기본)</option><option value="jeongja">정자시</option><option value="midnight">자정 기준</option></select></label>
       </div>
+      <label for="concern">궁금한 것 (상담 질문)<textarea id="concern" rows="3" maxlength="2000" placeholder="예: 지금 하는 수입 사업이 나와 맞는지, 올해 이직해도 될지, 아이들 진로가 궁금해요."></textarea></label>
+      <div class="people" id="people"></div>
+      <div class="actions"><button type="button" class="ghost" id="add-person">+ 함께 볼 사람 추가 (가족·연인·동료)</button><span class="muted" style="font-size:13px">궁합과 관계 풀이에 쓰여요.</span></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="submit" id="go">사주 풀기</button><button type="button" class="ghost" id="save-me" hidden>내 사주로 저장</button><span id="me-msg" class="muted" role="status"></span><span class="err" id="err" role="alert"></span></div>
     </form>
   </section>
@@ -178,7 +202,7 @@ footer { font-size: 13px; color: var(--muted); }
 
   // 예시 입력 (실존 인물 아님)
   $("#date").value = "1992-03-21"; $("#cal").value = "solar"; $("#sex").value = "female"; $("#place").value = "부산";
-  $("#tm-range").checked = true; $("#t1").value = "09:00"; $("#t2").value = "11:00"; $("#mbti").value = "INFJ-T"; setTimeMode();
+  $("#tm-range").checked = true; $("#t1").value = "09:00"; $("#t2").value = "11:00"; $("#mbti").value = "INFJ-T"; $("#name").value = "예시"; $("#concern").value = "카페 창업을 준비 중인데 언제 시작하면 좋을까요?"; setTimeMode();
   ["#date", "#cal", "#sex", "#place", "#t1", "#t2", "#mbti"].forEach((s) => $(s).addEventListener("input", () => { $("#example-tag").hidden = true; }));
 
   function readForm() {
@@ -186,7 +210,8 @@ footer { font-size: 13px; color: var(--muted); }
     const date = $("#date").value;
     if (!date) throw new Error("생년월일을 입력해 주세요.");
     const base = { date, calendar: cal === "solar" ? "solar" : "lunar", leap: cal === "leap", sex: $("#sex").value || null,
-      place: $("#place").value || null, zishi: $("#zishi").value, seunYears: [thisYear, thisYear + 1] };
+      place: $("#place").value || null, zishi: $("#zishi").value, seunYears: [thisYear, thisYear + 1],
+      name: $("#name").value.trim(), concern: $("#concern").value.trim() };
     const mbti = $("#mbti").value.trim();
     if (mbti) { E.parseType(mbti); base.mbti = mbti; }
     if (mode === "exact") { if (!$("#t1").value) throw new Error("태어난 시각을 넣거나 '모름'을 고르세요."); return { base, times: [{ time: $("#t1").value }] }; }
@@ -294,9 +319,10 @@ footer { font-size: 13px; color: var(--muted); }
     }).join("");
   }
 
-  function render(results, input) {
+  function render(results, input, people) {
     const R = results[state.pick || 0].r, { l1, l2 } = R;
-    state.last = { R, input, results };
+    people = people || (state.last && state.last.people) || [];
+    state.last = { R, input, results, people };
     const p = l1.pillars, order = [["hour", "시주"], ["day", "일주 · 나"], ["month", "월주"], ["year", "연주"]];
     const pill = order.map(([k, cap]) => { const x = p[k];
       if (!x) return `<div class="pillar"><div class="cap">${cap}</div><div class="glyph muted">?</div><div class="gsub">시각 모름</div><div class="glyph muted">?</div><div class="meta">—</div></div>`;
@@ -347,10 +373,14 @@ footer { font-size: 13px; color: var(--muted); }
       ${R.mbti ? `<section class="panel"><h2>타고난 결 vs 지금의 나 · ${R.mbti.type}</h2><div class="legend"><span><i style="background:var(--earth)"></i>사주 쪽 기울기</span><span><i style="background:var(--accent)"></i>내가 답한 유형</span></div>${axisView(R)}<p class="muted" style="font-size:13px">${esc(C.mbti.disclaimer)}</p></section>` : ""}
       <section aria-labelledby="yr-h"><h2 id="yr-h">${thisYear}·${thisYear + 1}년 운세</h2><div class="tiles">${seun}</div></section>
       ${daewoon}
+      ${peopleHtml(R, people)}
+      ${chatHtml()}
+      ${reportPanel()}
       ${surveyHtml(R)}
       <div id="owner"></div>`;
-    $("#out").querySelectorAll("[data-area]").forEach((b) => b.addEventListener("click", () => { state.area = b.dataset.area; render(results, input); $("#rd-h").scrollIntoView({ block: "start" }); }));
-    $("#out").querySelectorAll("[data-pick]").forEach((b) => b.addEventListener("click", () => { state.pick = Number(b.dataset.pick); render(results, input); }));
+    $("#out").querySelectorAll("[data-area]").forEach((b) => b.addEventListener("click", () => { state.area = b.dataset.area; render(results, input, people); $("#rd-h").scrollIntoView({ block: "start" }); }));
+    $("#out").querySelectorAll("[data-pick]").forEach((b) => b.addEventListener("click", () => { state.pick = Number(b.dataset.pick); render(results, input, people); }));
+    bindChat(); bindReport();
     bindSurvey(R, input);
     ownerPanel();
   }
@@ -416,6 +446,208 @@ footer { font-size: 13px; color: var(--muted); }
     } catch (e) { /* 읽기 실패 시 패널 생략 */ }
   }
 
+  // ── 함께 볼 사람 ──
+  const RELS = ["배우자", "연인", "자녀", "부모", "형제자매", "동업자", "직원", "친구", "기타"];
+  state.people = [];
+  function personRow(p, i) {
+    return `<div class="person" data-i="${i}">
+      <div class="row">
+        <label for="pr-${i}">관계<select id="pr-${i}" data-k="rel">${RELS.map((r) => `<option ${r === p.rel ? "selected" : ""}>${r}</option>`).join("")}</select></label>
+        <label for="pn-${i}">이름·호칭<input id="pn-${i}" data-k="name" maxlength="20" value="${esc(p.name)}"></label>
+        <label for="pd-${i}">생년월일<input id="pd-${i}" data-k="date" type="date" min="1901-01-01" max="2099-12-31" value="${esc(p.date)}"></label>
+        <label for="pc-${i}">달력<select id="pc-${i}" data-k="cal"><option value="solar" ${p.cal === "solar" ? "selected" : ""}>양력</option><option value="lunar" ${p.cal === "lunar" ? "selected" : ""}>음력</option><option value="leap" ${p.cal === "leap" ? "selected" : ""}>음력 윤달</option></select></label>
+        <label for="pt-${i}">시각(모르면 비움)<input id="pt-${i}" data-k="time" type="time" value="${esc(p.time)}"></label>
+        <label for="ps-${i}">성별<select id="ps-${i}" data-k="sex"><option value="">선택 안 함</option><option value="female" ${p.sex === "female" ? "selected" : ""}>여성</option><option value="male" ${p.sex === "male" ? "selected" : ""}>남성</option></select></label>
+      </div><button type="button" class="xbtn" data-del="${i}">빼기</button></div>`;
+  }
+  function drawPeople() {
+    $("#people").innerHTML = state.people.map(personRow).join("");
+    $("#people").querySelectorAll(".person").forEach((row) => {
+      const i = Number(row.dataset.i);
+      row.querySelectorAll("[data-k]").forEach((el) => el.addEventListener("input", () => { state.people[i][el.dataset.k] = el.value; }));
+      row.querySelector("[data-del]").addEventListener("click", () => { state.people.splice(i, 1); drawPeople(); });
+    });
+  }
+  $("#add-person").addEventListener("click", () => { if (state.people.length >= 8) return; state.people.push({ rel: "배우자", name: "", date: "", cal: "solar", time: "", sex: "" }); drawPeople(); });
+
+  const BR = "子丑寅卯辰巳午未申酉戌亥";
+  const josaIeyo = (w) => { const c = w.charCodeAt(w.length - 1) - 0xac00; return c >= 0 && c <= 11171 && c % 28 ? "이에요" : "예요"; };
+  function compat(R, P) {
+    const a = R.l1, b = P.l1, da = a.pillars.day.pillar, db = b.pillars.day.pillar;
+    const sa = E.consts.STEMS.indexOf(da[0]), sb = E.consts.STEMS.indexOf(db[0]);
+    const pts = []; let score = 0;
+    const HAP = ["甲己", "乙庚", "丙辛", "丁壬", "戊癸"], CHUNG = ["甲庚", "乙辛", "丙壬", "丁癸"], YUK = ["子丑", "寅亥", "卯戌", "辰酉", "巳申", "午未"];
+    const has = (list, x, y) => list.some((p) => (p[0] === x && p[1] === y) || (p[0] === y && p[1] === x));
+    if (has(HAP, da[0], db[0])) { score += 2; pts.push(`일간 천간합(${da[0]}${db[0]}): 서로 끌리는 결`); }
+    if (has(CHUNG, da[0], db[0])) { score -= 1; pts.push(`일간 충(${da[0]}${db[0]}): 판단 방식이 부딪히기 쉬움`); }
+    if (has(YUK, da[1], db[1])) { score += 2; pts.push(`일지 육합(${da[1]}${db[1]}): 생활 리듬이 맞물림`); }
+    if (((BR.indexOf(da[1]) - BR.indexOf(db[1])) % 12 + 12) % 12 === 6) { score -= 2; pts.push(`일지 충(${da[1]}${db[1]}): 생활 공간·습관 조율 필요`); }
+    const ya = R.l2.yongsin.element, yb = P.l2.yongsin.element;
+    if ((b.elements.with_hidden[ya] || 0) >= 2) { score += 1; pts.push(`상대가 나의 용신(${ya}) 기운을 넉넉히 가짐`); }
+    if ((a.elements.with_hidden[yb] || 0) >= 2) { score += 1; pts.push(`내가 상대의 용신(${yb}) 기운을 넉넉히 가짐`); }
+    const myTo = E.tenGod(sb, sa), theirTo = E.tenGod(sa, sb);
+    const rel = R.l1._stems && P.l1._stems ? E.natalRelations(R.l1._stems, R.l1._branches, E.parseGz(db)) : [];
+    return { score, points: pts.length ? pts : ["두드러진 합·충 없음: 무난한 조합"], myTo, theirTo, dayRel: rel };
+  }
+  function peopleResults() {
+    const out = [];
+    state.people.forEach((p) => {
+      if (!p.date) return;
+      try {
+        const r = E.reading({ date: p.date, calendar: p.cal === "solar" ? "solar" : "lunar", leap: p.cal === "leap", time: p.time || null,
+          sex: p.sex || null, seunYears: [thisYear, thisYear + 1] });
+        out.push({ p, r });
+      } catch (e) { out.push({ p, error: e.message || String(e) }); }
+    });
+    return out;
+  }
+  function peopleHtml(R, list) {
+    if (!list.length) return "";
+    return `<section class="panel" aria-labelledby="pp-h"><h2 id="pp-h">함께 본 사람들 · 궁합과 관계</h2>${list.map(({ p, r, error }) => {
+      const nm = esc(p.name || p.rel);
+      if (error) return `<div class="rel-card"><h3>${nm} (${esc(p.rel)})</h3><p class="err">${esc(error)}</p></div>`;
+      const c = compat(R, r), pl = r.l1.pillars, l2 = r.l2;
+      const mini = ["year", "month", "day", "hour"].map((k) => pl[k] ? `<span title="${k}">${pl[k].pillar}</span>` : "").join("");
+      return `<div class="rel-card"><div class="actions" style="justify-content:space-between"><h3>${nm} · ${esc(p.rel)}</h3><span class="pill ${c.score >= 2 ? "good" : c.score < 0 ? "bad" : "mid"}">궁합 점수 ${c.score}</span></div>
+        <div class="mini">${mini}</div>
+        <p class="muted" style="font-size:13px">${pl.hour ? "" : "시각 모름 · 세 기둥으로 계산 · "}${r.l1.day_master.char} ${esc(C.dayMaster[r.l1.day_master.char].image)} · ${l2.strength.grade} · ${l2.gyeokguk.name} ${l2.gyeokguk.status} · 용신 ${l2.yongsin.element}</p>
+        <p>상대의 일간은 나에게 <b>${c.theirTo}</b>, 나의 일간은 상대에게 <b>${c.myTo}</b>${josaIeyo(c.myTo)}. ${esc(C.tenGod[c.theirTo] ? C.tenGod[c.theirTo].core : "")}</p>
+        <ul>${c.points.map((x) => `<li>${esc(x)}</li>`).join("")}${c.dayRel.length ? `<li class="muted">상대 일주가 내 원국과: ${c.dayRel.map(esc).join(", ")}</li>` : ""}</ul></div>`;
+    }).join("")}<p class="muted" style="font-size:13px">궁합은 경향과 대화 포인트예요. 상대의 동의 없이 상대의 사주를 단정하지 마세요.</p></section>`;
+  }
+
+  // ── 상담 (Claude) ──
+  state.chat = [];
+  let sampleFn = undefined, consultCtl = null;
+  const getSample = async () => { if (sampleFn === undefined) sampleFn = window.claude?.use ? await window.claude.use("sample") : null; return sampleFn; };
+  function md(src) { // 상담 답변용 작은 마크다운 렌더러 (제목·굵게·목록·표·문단)
+    const lines = String(src).replace(/\r/g, "").split("\n"), out = []; let list = null, table = null, para = [];
+    const inline = (t) => esc(t).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/`([^`]+)`/g, "<code>$1</code>");
+    const flush = () => { if (para.length) { out.push(`<p>${inline(para.join(" "))}</p>`); para = []; } if (list) { out.push(`<${list.t}>${list.items.map((x) => `<li>${inline(x)}</li>`).join("")}</${list.t}>`); list = null; }
+      if (table) { const rows = table.filter((r) => !/^\s*\|?\s*:?-{2,}/.test(r)).map((r) => r.replace(/^\s*\||\|\s*$/g, "").split("|").map((c) => c.trim()));
+        if (rows.length) out.push(`<div class="tw"><table><thead><tr>${rows[0].map((c) => `<th>${inline(c)}</th>`).join("")}</tr></thead><tbody>${rows.slice(1).map((r) => `<tr>${r.map((c) => `<td>${inline(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`); table = null; } };
+    for (const ln of lines) {
+      if (/^\s*\|.*\|\s*$/.test(ln)) { if (!table) { flush(); table = []; } table.push(ln); continue; } else if (table) flush();
+      let m;
+      if ((m = ln.match(/^\s*#{1,4}\s+(.*)/))) { flush(); out.push(`<h3>${inline(m[1])}</h3>`); }
+      else if ((m = ln.match(/^\s*[-*•]\s+(.*)/))) { if (para.length) { out.push(`<p>${inline(para.join(" "))}</p>`); para = []; } if (!list || list.t !== "ul") { if (list) flush(); list = { t: "ul", items: [] }; } list.items.push(m[1]); }
+      else if ((m = ln.match(/^\s*\d+[.)]\s+(.*)/))) { if (para.length) { out.push(`<p>${inline(para.join(" "))}</p>`); para = []; } if (!list || list.t !== "ol") { if (list) flush(); list = { t: "ol", items: [] }; } list.items.push(m[1]); }
+      else if (!ln.trim()) flush();
+      else { if (list) flush(); para.push(ln.trim()); }
+    }
+    flush(); return `<div class="md">${out.join("")}</div>`;
+  }
+  function chartSummary(nm, R, ten) {
+    const { l1, l2 } = R, p = l1.pillars;
+    const pil = ["year", "month", "day", "hour"].map((k) => p[k] ? `${{ year: "연", month: "월", day: "일", hour: "시" }[k]}주 ${p[k].pillar}(천간 ${p[k].stem.ten_god}/지지 ${p[k].branch.ten_god}/${p[k].branch.life_stage})` : `시주 미상`).join(", ");
+    const lines = [`[${nm}] 생년월일 ${l1.input.date}(${l1.input.calendar === "lunar" ? "음력" : "양력"}) ${l1.input.time || "시각 모름"} ${l1.input.sex === "male" ? "남" : l1.input.sex === "female" ? "여" : "성별 미상"}`,
+      `명식: ${pil}`, `일간 ${l1.day_master.char}(${l1.day_master.element}) · 오행(지장간 가중) ${JSON.stringify(l1.elements.with_hidden)}`,
+      `강약 ${l2.strength.grade} ${l2.strength.score}점 · 격국 ${l2.gyeokguk.name} ${l2.gyeokguk.status} (${l2.gyeokguk.reason.join("; ")})`,
+      `조후 ${l2.johu.table_stems.join("")} 원문 「${l2.johu.evidence}」 · 용신 ${l2.yongsin.element}(${l2.yongsin.method}, 신뢰도 ${l2.yongsin.confidence}) 희신 ${l2.yongsin.huisin} 기신 ${l2.yongsin.gisin}`,
+      `십신 분포 ${JSON.stringify(l2.ten_god_distribution)} · 신살 ${l1.sinsal.map((s) => s.name + "(" + s.at + ")").join(", ") || "없음"} · 공망 ${l1.gongmang.join("")} · 원국 합충 ${l1.interactions.map((i) => i.type + i.chars).join(", ") || "없음"}`];
+    if (l2.daewoon_rating) lines.push(`대운(${l1.daewoon.direction}, 대운수 ${l1.daewoon.start_age.years}세): ` + l2.daewoon_rating.map((d) => `${d.age_from}세 ${d.pillar} ${d.rating}`).join(" / "));
+    if (ten) lines.push(`세운: ` + ten.map((s) => `${s.year} ${s.pillar} ${s.rating}${s.natal.length ? "(" + s.natal.join(",") + ")" : ""}`).join(" / "));
+    return lines.join("\n");
+  }
+  function consultContext() {
+    const L = state.last; if (!L) return "";
+    const R = L.R, nm = L.input.name || "의뢰인";
+    let ten = null; try { ten = E.interpret(E.compute({ ...L.input, time: R.l1.input.time, seunYears: Array.from({ length: 10 }, (_, i) => thisYear + i) })).seun_rating; } catch (e) { ten = R.l2.seun_rating; }
+    const parts = [chartSummary(nm + " (의뢰인)", R, ten)];
+    if (L.results.length > 1) parts.push(`시각 범위 후보: ${L.results.map((x) => `${x.cand.from}~${x.cand.to} ${x.cand.hour}시 ${x.cand.share}%`).join(", ")} (현재 선택 ${R.l1.pillars.hour ? R.l1.pillars.hour.pillar : "-"})`);
+    if (R.mbti) parts.push(`MBTI ${R.mbti.type}${R.mbti.identity ? "-" + R.mbti.identity : ""} · 인지기능 ${R.mbti.stack.join(" ")} · 사주 기울기 비교 ${R.mbti.compare.map((a) => `${a.axis}: 사주 ${a.saju_lean} / 본인 ${a.self}`).join(", ")}`);
+    (L.people || []).forEach(({ p, r }) => { if (!r) return; const c = compat(R, r);
+      parts.push(chartSummary(`${p.name || p.rel} (${p.rel})`, r, null) + `\n의뢰인과의 관계: 상대 일간은 의뢰인에게 ${c.theirTo}, 의뢰인 일간은 상대에게 ${c.myTo}; 궁합 점수 ${c.score}; ${c.points.join("; ")}${c.dayRel.length ? "; 상대 일주↔의뢰인 원국 " + c.dayRel.join(",") : ""}`); });
+    if (L.input.concern) parts.push(`의뢰인이 적은 궁금한 것: ${L.input.concern}`);
+    return parts.join("\n\n");
+  }
+  function rulesTurn() {
+    const R = state.last && state.last.R, tone = R && R.mbti ? R.mbti.tone.map((t) => "- " + t).join("\n") : "";
+    return `당신은 명리학(사주) 상담가입니다. 아래 [데이터]는 검증된 만세력 엔진과 고전 규칙(적천수 억부, 궁통보감 조후, 자평진전 격국)으로 계산한 결과입니다.
+규칙:
+- 반드시 [데이터]에 있는 명식·십신·용신·대운·세운·궁합 정보에 근거해 답하고, 근거(예: "일지 식신", "용신 목")를 문장 안에 짚어 주세요. 데이터에 없는 간지를 새로 계산하거나 지어내지 마세요.
+- 한국어로, 제목(###)과 짧은 문단, 필요하면 표를 써서 정리하세요. 1,500자 안팎. 질문이 사업·진로·관계처럼 구체적이면 실제로 해 볼 수 있는 조언과 시기(연도·달)를 함께 주세요.
+- 오행 상징(업종·방위·색·맛)으로 해석할 때는 전통적 해석임을 밝히세요. 사업·투자·법률·의료 판단을 대신하지 말고 참고로 말하세요.
+- 수명·중병·사고·이혼·파산을 단정하지 말고, 건강은 관리 포인트로만, 부적·굿·개명 권유는 하지 마세요. 주의할 시기는 "대비할 점"으로 말하세요.
+- 다른 사람(가족·연인·직원)의 사주는 경향으로만 말하고 단정하지 마세요. 시각을 모르는 사람은 세 기둥 기준임을 밝히세요.
+- 마지막 줄은 "사주는 참고용이며, 선택과 노력으로 바뀝니다."로 끝내세요.
+${tone ? "전달 방식(MBTI 맞춤, 내용은 바꾸지 말 것):\n" + tone + "\n" : ""}
+[데이터]
+${consultContext()}`;
+  }
+  function chatHtml() {
+    return `<section class="panel" aria-labelledby="cs-h" id="consult"><h2 id="cs-h">상담</h2>
+      <p class="muted" style="font-size:14px">위 풀이를 바탕으로 Claude가 답해요. 처음 한 번 사용 허락을 물어보고, 답변은 보는 사람의 Claude 사용량을 써요.</p>
+      <div class="chat" id="chat">${state.chat.map((m) => `<div class="msg ${m.role === "user" ? "user" : "ai"}"><span class="who">${m.role === "user" ? "나" : "상담가"}</span>${m.role === "user" ? `<p>${esc(m.content)}</p>` : md(m.content)}</div>`).join("")}</div>
+      <label for="ask">질문<textarea id="ask" rows="2" maxlength="2000" placeholder="예: 올해 수입 사업을 늘려도 될까요? 큰딸 진로는 어떤 쪽이 맞을까요?"></textarea></label>
+      <div class="actions"><button type="button" id="ask-go">질문 보내기</button><button type="button" class="ghost" id="ask-full">신청서 질문으로 종합 상담</button><button type="button" class="ghost" id="ask-stop" hidden>멈추기</button><span id="ask-msg" class="muted" role="status"></span></div></section>`;
+  }
+  const SAMPLE_ERR = { not_granted: "상담 사용을 허락하지 않아 이 화면에서는 상담을 쓸 수 없어요.", sampling_disabled: "이 계정에서는 Claude 상담을 쓸 수 없어요.",
+    rate_limited: "질문이 몰렸거나 사용량 한도에 닿았어요. 잠시 뒤 다시 보내 주세요.", session_expired: "다시 로그인한 뒤 보내 주세요.", refused: "이 질문에는 답하기 어려워요. 다르게 물어봐 주세요.",
+    prompt_too_large: "내용이 너무 길어요. 함께 볼 사람이나 질문을 줄여 주세요." };
+  async function ask(question) {
+    const msg = $("#ask-msg"), sample = await getSample();
+    if (!sample) { msg.textContent = "이 화면에서는 상담 기능을 쓸 수 없어요. claude.ai에서 페이지를 열어 주세요."; return; }
+    if (!question.trim()) { msg.textContent = "질문을 적어 주세요."; return; }
+    state.chat.push({ role: "user", content: question.trim() });
+    const turns = [{ role: "user", content: rulesTurn() }, ...state.chat.slice(-12)];
+    $("#chat").insertAdjacentHTML("beforeend", `<div class="msg user"><span class="who">나</span><p>${esc(question.trim())}</p></div><div class="msg ai" id="live"><span class="who">상담가</span><div class="md"><p class="muted">생각하는 중…</p></div></div>`);
+    $("#ask").value = ""; $("#ask-go").disabled = $("#ask-full").disabled = true; $("#ask-stop").hidden = false; msg.textContent = "";
+    consultCtl = new AbortController();
+    const live = $("#live");
+    try {
+      const { text, truncated } = await sample(turns, { cache: false, signal: consultCtl.signal, onText: ({ text }) => { live.innerHTML = `<span class="who">상담가</span>${md(text)}`; } });
+      state.chat.push({ role: "assistant", content: text }); if (truncated) msg.textContent = "답이 길어 중간에 끊겼어요. 나눠서 물어봐 주세요.";
+      saveProfile(true);
+    } catch (e) {
+      if (e && e.text) { state.chat.push({ role: "assistant", content: e.text + "\n\n(중간에 멈춤)" }); live.innerHTML = `<span class="who">상담가</span>${md(e.text)}`; }
+      else { live.remove(); state.chat.pop(); }
+      if (e && e.code !== "cancelled") msg.textContent = SAMPLE_ERR[e.code] || "답을 받지 못했어요. 잠시 뒤 다시 보내 주세요.";
+    } finally { live.removeAttribute("id"); $("#ask-go").disabled = $("#ask-full").disabled = false; $("#ask-stop").hidden = true; }
+  }
+  function bindChat() {
+    $("#ask-go").addEventListener("click", () => ask($("#ask").value));
+    $("#ask-full").addEventListener("click", () => ask(`신청서에 적은 궁금한 것에 대해 종합 상담해 주세요: ${state.last.input.concern || "전반적인 운세와 앞으로 3년의 흐름"}`));
+    $("#ask-stop").addEventListener("click", () => consultCtl && consultCtl.abort());
+  }
+
+  // ── 보고서 ──
+  function reportHtml() {
+    const L = state.last, R = L.R, { l1, l2 } = R, nm = L.input.name || "의뢰인", p = l1.pillars;
+    const row = (k, cap) => p[k] ? `<td><b style="font-size:22px">${p[k].pillar}</b><br>${p[k].stem.ten_god} / ${p[k].branch.ten_god}<br><small>${p[k].branch.life_stage} · ${p[k].branch.hidden.join("")}</small></td>` : `<td>시각 모름</td>`;
+    const areas = AREAS.map((a) => `<h3>${a}</h3>${areaText(a, R)}`).join("");
+    const dw = l2.daewoon_rating ? `<h2>10년 대운</h2><table><tr><th>나이</th><th>대운</th><th>흐름</th><th>원국과</th></tr>${l2.daewoon_rating.map((d) => `<tr><td>${d.age_from}세~</td><td>${d.pillar}</td><td>${d.rating}</td><td>${d.natal.map(esc).join(", ")}</td></tr>`).join("")}</table>` : "";
+    let ten = []; try { ten = E.interpret(E.compute({ ...L.input, time: l1.input.time, seunYears: Array.from({ length: 10 }, (_, i) => thisYear + i) })).seun_rating; } catch (e) { ten = l2.seun_rating; }
+    const sw = `<h2>세운 ${thisYear}~${thisYear + 9}</h2><table><tr><th>연도</th><th>세운</th><th>흐름</th><th>원국과</th></tr>${ten.map((s) => `<tr><td>${s.year}</td><td>${s.pillar}</td><td>${s.rating}</td><td>${s.natal.map(esc).join(", ")}</td></tr>`).join("")}</table>`;
+    const ppl = (L.people || []).filter((x) => x.r).map(({ p: q, r }) => { const c = compat(R, r), pl = r.l1.pillars;
+      return `<h3>${esc(q.name || q.rel)} (${esc(q.rel)})</h3><p>명식 ${["year", "month", "day", "hour"].map((k) => pl[k] ? pl[k].pillar : "□□").join(" ")} · ${r.l2.strength.grade} · ${r.l2.gyeokguk.name} ${r.l2.gyeokguk.status} · 용신 ${r.l2.yongsin.element}</p><p>상대 일간은 나에게 ${c.theirTo}, 나는 상대에게 ${c.myTo} · 궁합 점수 ${c.score}</p><ul>${c.points.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`; }).join("");
+    const chat = state.chat.map((m) => m.role === "user" ? `<div class="q"><b>질문</b> ${esc(m.content)}</div>` : `<div class="a">${md(m.content)}</div>`).join("");
+    const today = new Date().toISOString().slice(0, 10);
+    return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(nm)} 사주 상담 보고서</title>
+<style>body{font:15px/1.7 "Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;color:#1b2430;max-width:820px;margin:0 auto;padding:28px 18px;background:#fff}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:28px 0 8px;border-bottom:2px solid #1f6f66;padding-bottom:4px}h3{font-size:16px;margin:16px 0 4px}table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}td,th{border:1px solid #d9ddd6;padding:6px 8px;text-align:left;vertical-align:top}th{background:#f2f4f0}.muted{color:#5d6673}.mbti-box{border:1px solid #9cc9c2;background:#f1f8f6;border-radius:8px;padding:8px 12px;margin:6px 0}.eyebrow{font-size:12px;color:#1f6f66;font-weight:600}.q{background:#f2f4f0;border-radius:8px;padding:8px 12px;margin:12px 0 6px}.a{border-left:3px solid #1f6f66;padding:4px 12px}p{margin:4px 0}</style></head><body>
+<h1>${esc(nm)} 사주 상담 보고서</h1><p class="muted">작성일 ${today} · 생년월일 ${l1.input.date} (${l1.input.calendar === "lunar" ? "음력" : "양력"}) ${l1.input.time || "시각 모름"} · ${l1.input.sex === "male" ? "남성" : l1.input.sex === "female" ? "여성" : "성별 미상"}${R.mbti ? " · " + R.mbti.type + (R.mbti.identity ? "-" + R.mbti.identity : "") : ""} · 진태양시 ${l1.time.local_solar_time} (${l1.time.longitude_source})</p>
+<h2>명식</h2><table><tr><th>시주</th><th>일주(나)</th><th>월주</th><th>연주</th></tr><tr>${row("hour")}${row("day")}${row("month")}${row("year")}</tr></table>
+<h2>요약</h2><table><tr><th>일간</th><td>${l1.day_master.char} ${esc(C.dayMaster[l1.day_master.char].name)} · ${esc(C.dayMaster[l1.day_master.char].image)}</td></tr><tr><th>강약 [적천수]</th><td>${l2.strength.grade} ${l2.strength.score}점</td></tr><tr><th>격국 [자평진전]</th><td>${l2.gyeokguk.name} ${l2.gyeokguk.status} · ${esc(l2.gyeokguk.reason.join(", "))}</td></tr><tr><th>조후 [궁통보감]</th><td>${l2.johu.table_stems.join("·")} · 「${esc(l2.johu.evidence)}」</td></tr><tr><th>용신·희신·기신</th><td>${l2.yongsin.element} · ${l2.yongsin.huisin} · ${l2.yongsin.gisin} (${l2.yongsin.method}, 신뢰도 ${l2.yongsin.confidence})</td></tr><tr><th>오행</th><td>${EL.map((k) => `${k} ${l1.elements.with_hidden[k]}`).join(" · ")}</td></tr><tr><th>신살</th><td>${l1.sinsal.map((s) => `${s.name}(${s.at})`).join(", ") || "없음"}</td></tr></table>
+<h2>영역별 풀이</h2>${areas}${dw}${sw}${ppl ? `<h2>함께 본 사람들</h2>${ppl}` : ""}${chat ? `<h2>상담 기록</h2>${chat}` : ""}
+<p class="muted" style="margin-top:28px">사주는 참고용이며, 인생은 본인의 선택과 노력으로 바뀝니다. 명식은 한국천문연구원·JPL DE421과 1분 이내로 대조한 만세력 엔진으로, 조후·격국은 『궁통보감』·『자평진전』 원문과 대조한 규칙으로 계산했습니다.</p></body></html>`;
+  }
+  function reportPanel() {
+    return `<section class="panel" aria-labelledby="rp-h"><h2 id="rp-h">보고서</h2><p class="muted" style="font-size:14px">명식, 요약, 영역별 풀이, 대운·세운, 함께 본 사람, 상담 기록을 한 문서로 묶어요.</p>
+      <div class="actions"><button type="button" id="rp-save">보고서 내려받기 (HTML)</button><button type="button" class="ghost" id="rp-view">미리보기</button><span id="rp-msg" class="muted" role="status"></span></div>
+      <div id="rp-preview" hidden style="border:1px solid var(--line);border-radius:10px;overflow:hidden"><iframe id="rp-frame" title="보고서 미리보기" style="width:100%;height:640px;border:0;background:#fff"></iframe></div></section>`;
+  }
+  function bindReport() {
+    $("#rp-view").addEventListener("click", () => { const box = $("#rp-preview"); box.hidden = !box.hidden; if (!box.hidden) $("#rp-frame").srcdoc = reportHtml(); });
+    $("#rp-save").addEventListener("click", async () => {
+      const msg = $("#rp-msg"); msg.textContent = "";
+      const dl = window.claude?.use ? await window.claude.use("downloads") : null;
+      const name = `${(state.last.input.name || "사주").replace(/[\\/:*?"<>|]/g, "")}_사주상담보고서_${new Date().toISOString().slice(0, 10)}.html`;
+      if (!dl) { $("#rp-preview").hidden = false; $("#rp-frame").srcdoc = reportHtml(); msg.textContent = "이 화면에서는 내려받기를 쓸 수 없어 미리보기로 열었어요."; return; }
+      try { await dl.save({ filename: name, data: reportHtml() }); msg.textContent = "내려받았어요."; }
+      catch (e) { msg.textContent = e && e.code === "declined" ? "내려받기를 취소했어요." : "내려받지 못했어요. 미리보기에서 확인해 주세요."; }
+    });
+  }
+
   function run(ev) {
     if (ev) ev.preventDefault();
     $("#err").textContent = "";
@@ -423,13 +655,13 @@ footer { font-size: 13px; color: var(--muted); }
       const { base, times } = readForm();
       const results = times.map((t) => ({ cand: t.cand, r: E.reading({ ...base, time: t.time }) }));
       state.pick = 0; state.ratings = {}; state.axisFit = {};
-      render(results, base);
+      render(results, base, peopleResults());
     } catch (e) { $("#err").textContent = e.message || String(e); }
   }
   $("#f").addEventListener("submit", run);
 
   // ── 내 사주: 보는 사람마다 자기 입력을 비공개로 저장(data/users/<id>/profile) ──
-  const FIELDS = ["date", "cal", "sex", "place", "t1", "t2", "mbti", "zishi"];
+  const FIELDS = ["name", "date", "cal", "sex", "place", "t1", "t2", "mbti", "zishi", "concern"];
   const formState = () => { const o = {}; FIELDS.forEach((k) => { o[k] = $("#" + k).value; }); o.tmode = document.querySelector('input[name="tmode"]:checked').value; return o; };
   const applyForm = (o) => { FIELDS.forEach((k) => { if (o[k] !== undefined) $("#" + k).value = o[k]; }); const r = document.querySelector(`input[name="tmode"][value="${o.tmode}"]`); if (r) r.checked = true; setTimeMode(); };
   async function profileRef() {
@@ -443,17 +675,26 @@ footer { font-size: 13px; color: var(--muted); }
       $("#save-me").hidden = false;
       const snap = await ref.get();
       if (snap.exists && snap.data().form) {
-        applyForm(snap.data().form); $("#example-tag").hidden = true; $("#mine-tag").hidden = false; run();
+        const d = snap.data(); state.saved = true;
+        applyForm(d.form); state.people = Array.isArray(d.people) ? d.people.map((x) => ({ ...x })) : []; drawPeople();
+        state.chat = Array.isArray(d.chat) ? d.chat.map((x) => ({ ...x })) : [];
+        $("#example-tag").hidden = true; $("#mine-tag").hidden = false; run();
       }
     } catch (e) { /* 저장소를 못 쓰는 화면이면 예시로 계속 */ }
+  }
+  // 저장: 입력·함께 볼 사람·상담 기록. auto=true 는 상담 답변 뒤 자동 저장(이미 저장한 적 있는 사람만)
+  async function saveProfile(auto) {
+    if (auto && !state.saved) return;
+    const ref = await profileRef(); if (!ref) throw new Error("no store");
+    await ref.set({ form: formState(), people: state.people.slice(0, 8), chat: state.chat.slice(-40), savedAt: new Date().toISOString() });
+    state.saved = true;
   }
   $("#save-me").addEventListener("click", async () => {
     const msg = $("#me-msg"); msg.textContent = "저장하는 중…";
     try {
-      const ref = await profileRef(); if (!ref) throw new Error();
-      await ref.set({ form: formState(), savedAt: new Date().toISOString() });
+      await saveProfile(false);
       $("#example-tag").hidden = true; $("#mine-tag").hidden = false;
-      msg.textContent = "저장했어요. 다음에 열면 이 사주가 바로 보여요. 나만 볼 수 있어요.";
+      msg.textContent = "저장했어요. 입력·함께 볼 사람·상담 기록이 나만 볼 수 있게 남고, 다음에 열면 바로 이어져요.";
     } catch (e) { msg.textContent = "이 화면에서는 저장할 수 없어요."; }
   });
 
