@@ -107,6 +107,10 @@ def run(with_hour):
 if __name__ == "__main__":
     t0 = time.time()
     summary = {}
+    cells = I._JOHU_CELLS
+    table_ok = (len(cells) == 120 and all(c["stems"] and set(c["stems"] + c["conditional"]) <= set(S.STEMS)
+                                          and c["evidence"] for c in cells.values()))
+    print(f"[{'PASS' if table_ok else 'FAIL'}] 조후표 120칸·원문 근거 완비")
     for label, wh in (("시주 포함 518,400", True), ("시주 미상 43,200", False)):
         n, bad, stats, ex = run(wh)
         print(f"[{'PASS' if bad == 0 else 'FAIL'}] L2 전수 {label}: {n - bad}/{n} 불변식 통과", flush=True)
@@ -120,4 +124,4 @@ if __name__ == "__main__":
     with open(os.path.join(HERE, "data", "l2_exhaustive_summary.json"), "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=1)
     print(f"{time.time() - t0:.0f}s")
-    sys.exit(0 if all(v["violations"] == 0 for v in summary.values()) and same else 1)
+    sys.exit(0 if all(v["violations"] == 0 for v in summary.values()) and same and table_ok else 1)

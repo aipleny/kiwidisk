@@ -51,19 +51,14 @@ WEIGHTS = {"ys": 10, "yb": 10, "ms": 10, "mb": 30, "db": 15, "hs": 10, "hb": 15}
 ROK = [2, 3, 5, 6, 5, 6, 8, 9, 11, 0]          # 일간별 건록 지지
 YANGIN = {0: 3, 2: 6, 4: 6, 6: 9, 8: 0}       # 양간 양인 지지
 
-# [궁통보감] 일간 × 월지 조후 용신 (우선순위 순). 子=0 … 亥=11. verify:원전
-JOHU = {
-    0: {2: "丙癸", 3: "庚丙丁戊己", 4: "庚丁壬", 5: "癸丁庚", 6: "癸丁庚", 7: "癸丁庚", 8: "庚丁壬", 9: "庚丁丙", 10: "庚甲丁壬癸", 11: "庚丁丙戊", 0: "丁庚丙", 1: "丁庚丙"},
-    1: {2: "丙癸", 3: "丙癸", 4: "癸丙戊", 5: "癸", 6: "癸丙", 7: "癸丙", 8: "丙癸己", 9: "癸丙丁", 10: "癸辛", 11: "丙戊", 0: "丙", 1: "丙"},
-    2: {2: "壬庚", 3: "壬己", 4: "壬甲", 5: "壬癸庚", 6: "壬庚", 7: "壬庚", 8: "壬戊", 9: "壬癸", 10: "甲壬", 11: "甲戊庚壬", 0: "壬戊己", 1: "壬甲"},
-    3: {2: "甲庚", 3: "庚甲", 4: "甲庚", 5: "甲庚", 6: "壬庚癸", 7: "甲壬庚", 8: "甲庚丙戊", 9: "甲庚丙戊", 10: "甲庚戊", 11: "甲庚", 0: "甲庚", 1: "甲庚"},
-    4: {2: "丙甲癸", 3: "丙甲癸", 4: "甲丙癸", 5: "甲丙癸", 6: "壬甲丙", 7: "癸丙甲", 8: "丙癸甲", 9: "丙癸", 10: "甲丙癸", 11: "甲丙", 0: "丙甲", 1: "丙甲"},
-    5: {2: "丙庚甲", 3: "甲癸丙", 4: "丙癸甲", 5: "癸丙", 6: "癸丙", 7: "癸丙", 8: "丙癸", 9: "丙癸", 10: "甲丙癸", 11: "丙甲戊", 0: "丙甲戊", 1: "丙甲戊"},
-    6: {2: "戊甲壬丙丁", 3: "丁甲庚丙", 4: "甲丁壬癸", 5: "壬戊丙丁", 6: "壬癸", 7: "丁甲", 8: "丁甲", 9: "丁甲丙", 10: "甲壬", 11: "丁丙", 0: "丁甲丙", 1: "丙丁甲"},
-    7: {2: "己壬庚", 3: "壬甲", 4: "壬甲", 5: "壬甲癸", 6: "壬己癸", 7: "壬庚甲", 8: "壬甲戊", 9: "壬甲", 10: "壬甲", 11: "壬丙", 0: "丙戊壬甲", 1: "丙壬戊己"},
-    8: {2: "庚丙戊", 3: "戊辛庚", 4: "甲庚", 5: "壬辛庚癸", 6: "癸庚辛", 7: "辛甲", 8: "戊丁", 9: "甲庚", 10: "甲丙", 11: "戊丙庚", 0: "戊丙", 1: "丙丁甲"},
-    9: {2: "辛丙", 3: "庚辛", 4: "丙辛甲", 5: "辛", 6: "庚辛壬癸", 7: "庚辛壬癸", 8: "丁", 9: "辛丙", 10: "辛甲壬癸", 11: "庚辛戊丁", 0: "丙辛", 1: "丙丁"},
-}
+# [궁통보감] 일간 × 월지 조후 용신 (우선순위 순). 원문 대조본: references/johu-qiongtong.json
+_JOHU_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "johu-qiongtong.json")
+_JOHU_CELLS = json.load(open(_JOHU_PATH, encoding="utf-8"))["cells"]
+JOHU = {S.STEMS.index(k[0]): {} for k in _JOHU_CELLS}
+JOHU_COND = {S.STEMS.index(k[0]): {} for k in _JOHU_CELLS}
+for _k, _v in _JOHU_CELLS.items():
+    JOHU[S.STEMS.index(_k[0])][S.BRANCHES.index(_k[1])] = _v["stems"]
+    JOHU_COND[S.STEMS.index(_k[0])][S.BRANCHES.index(_k[1])] = _v["conditional"]
 
 SANGSIN = {  # [자평진전] 격국별 상신(相神) 십신군
     "정관격": ["재성", "인성"], "편관격": ["식상", "인성"], "정재격": ["식상", "관성"], "편재격": ["식상", "관성"],
@@ -142,7 +137,9 @@ def johu(stems, branches):
     priority = mb in (0, 1, 6, 7) and need_el is not None and c[need_el] < 1.0
     present = [ch for ch in need_stems if S.STEMS.index(ch) in [s for s in stems if s is not None]
                or any(S.STEMS.index(ch) in [h for h in S.HIDDEN[b] if h is not None] for b in branches if b is not None)]
-    return {"climate": climate, "table_stems": list(need_stems), "first_element": S.ELEMENTS_KO[first_el],
+    cell = _JOHU_CELLS[S.STEMS[ds] + S.BRANCHES[mb]]
+    return {"climate": climate, "table_stems": list(need_stems), "conditional_stems": list(cell["conditional"]),
+            "evidence": cell["evidence"], "first_element": S.ELEMENTS_KO[first_el],
             "first_element_idx": first_el, "present": present, "priority": priority,
             "basis": f"[궁통보감] {S.STEMS[ds]}일간 {S.BRANCHES[mb]}월 → {'·'.join(need_stems)}"}
 

@@ -1,0 +1,923 @@
+{
+ "source": "《穷通宝鉴》(余春台 편, 徐乐吾 평주본) 원문 2판본 대조: 殆知阁 garychowcmu/daizhigev20, mahavivo/scripta-sinica",
+ "method": "각 일간×월 단락에서 先·次·专用·为主·为佐 표현으로 우선순위를 정함. stems=본문이 직접 처방, conditional=조건부·대체 용신. evidence=판본 A 원문 인용(40자 이내).",
+ "verified": "2026-10-07",
+ "cells": {
+  "甲寅": {
+   "stems": "丙癸",
+   "conditional": "",
+   "evidence": "得丙癸逢，富贵双全",
+   "previous": "丙癸",
+   "status_vs_previous": "match"
+  },
+  "甲卯": {
+   "stems": "庚戊丁",
+   "conditional": "丙己",
+   "evidence": "总之正二月甲木，有庚戊者上命。如有丁透，大富大贵之命也。",
+   "previous": "庚丙丁戊己",
+   "status_vs_previous": "match",
+   "note": "丙/己 from 如无丙丁，一派壬癸，又无戊己制之 (anti-水泛); core is 庚戊, 丁 next. | Ours ranks a conditional stem ahead of a core stem (secondary order)."
+  },
+  "甲辰": {
+   "stems": "庚壬",
+   "conditional": "丁",
+   "evidence": "先取庚金，次用壬水",
+   "previous": "庚丁壬",
+   "status_vs_previous": "match",
+   "note": "Text: 或支成金局，方可用丁，不然，三月无用丁之法 — 丁 only if 支成金局. | Ours ranks a conditional stem ahead of a core stem (secondary order)."
+  },
+  "甲巳": {
+   "stems": "癸丁庚",
+   "conditional": "",
+   "evidence": "丙火司权，先癸後丁",
+   "previous": "癸丁庚",
+   "status_vs_previous": "match",
+   "note": "庚 from 或癸丁与庚齐透天干，此命可言科甲."
+  },
+  "甲午": {
+   "stems": "癸丁庚",
+   "conditional": "",
+   "evidence": "五月先癸後丁庚金次之",
+   "previous": "癸丁庚",
+   "status_vs_previous": "match"
+  },
+  "甲未": {
+   "stems": "丁庚",
+   "conditional": "癸",
+   "evidence": "六月三伏生寒，丁火退气。先丁後庚，无癸亦可。",
+   "previous": "癸丁庚",
+   "status_vs_previous": "order",
+   "note": "癸 optional (无癸亦可)."
+  },
+  "甲申": {
+   "stems": "丁庚",
+   "conditional": "戊",
+   "evidence": "七月甲木，丁火为尊，庚金次之，庚金不可少。",
+   "previous": "庚丁壬",
+   "status_vs_previous": "differs",
+   "note": "壬 not prescribed (壬水无碍，且能合丁); 戊 needed only if 癸 present (须见戊土，方可制水存火)."
+  },
+  "甲酉": {
+   "stems": "丁丙庚",
+   "conditional": "",
+   "evidence": "丁火为先，次用丙火，庚金再次。",
+   "previous": "庚丁丙",
+   "status_vs_previous": "order"
+  },
+  "甲戌": {
+   "stems": "丁壬癸",
+   "conditional": "庚戊",
+   "evidence": "独爱丁火，壬癸滋扶，丁壬癸透，戊己亦透",
+   "previous": "庚甲丁壬癸",
+   "status_vs_previous": "differs",
+   "note": "Also 九月甲木，端用丁癸，见戊透必贵; 庚金得所，科甲定然; if 四柱木多 端用庚金. 甲 (比肩) is not a 用神 here."
+  },
+  "甲亥": {
+   "stems": "庚丁丙戊",
+   "conditional": "",
+   "evidence": "十月甲木，庚丁为要，丙火次之。忌壬水泛身，须戊土制之。",
+   "previous": "庚丁丙戊",
+   "status_vs_previous": "match"
+  },
+  "甲子": {
+   "stems": "丁庚丙",
+   "conditional": "",
+   "evidence": "木性生寒，丁先庚後，丙火佐之。",
+   "previous": "丁庚丙",
+   "status_vs_previous": "match"
+  },
+  "甲丑": {
+   "stems": "庚丁",
+   "conditional": "",
+   "evidence": "先用庚劈甲，方引丁火始得木火有通明之象，故丁次之。",
+   "previous": "丁庚丙",
+   "status_vs_previous": "differs",
+   "note": "Text for 12月 names only 庚 then 丁 (乏庚略可，乏丁无用); no 丙."
+  },
+  "乙寅": {
+   "stems": "丙癸",
+   "conditional": "",
+   "evidence": "故以丙火为先，癸水次之。",
+   "previous": "丙癸",
+   "status_vs_previous": "match"
+  },
+  "乙卯": {
+   "stems": "丙癸",
+   "conditional": "",
+   "evidence": "以丙为君，癸为臣",
+   "previous": "丙癸",
+   "status_vs_previous": "match"
+  },
+  "乙辰": {
+   "stems": "癸丙",
+   "conditional": "戊",
+   "evidence": "三月乙木，阳气愈炽，先癸後丙。",
+   "previous": "癸丙戊",
+   "status_vs_previous": "match",
+   "note": "戊 only conditional: 或见水局，丙戊高透 / 得一戊己制癸."
+  },
+  "乙巳": {
+   "stems": "癸",
+   "conditional": "丙辛庚",
+   "evidence": "四月乙木专用癸水，丙火酌用，虽以庚辛佐癸，须辛透为清。",
+   "previous": "癸",
+   "status_vs_previous": "match",
+   "note": "Text: 土多困癸，贫贱 — 戊 is not a 用神."
+  },
+  "乙午": {
+   "stems": "癸丙",
+   "conditional": "",
+   "evidence": "上半月属阳，仍用癸水。下半月属阴，三伏生寒，丙癸齐用。",
+   "previous": "癸丙",
+   "status_vs_previous": "match",
+   "note": "柱多金水 丙火为先, otherwise 癸 first. 三夏总论 says 五六月先丙後癸，夏至前仍用癸水 (internal tension); 总之夏月 adds 庚辛次之."
+  },
+  "乙未": {
+   "stems": "癸丙",
+   "conditional": "",
+   "evidence": "六月乙木，木性且寒，柱多金水，丙火为尊。",
+   "previous": "癸丙",
+   "status_vs_previous": "match",
+   "note": "癸水透干，大富大贵。无癸定作常人. 三夏总论: 五六月先丙後癸 — 丙 first if 柱多金水."
+  },
+  "乙申": {
+   "stems": "丙己癸",
+   "conditional": "",
+   "evidence": "七月喜己土为用，或不见丙癸。己土必不可少",
+   "previous": "丙癸己",
+   "status_vs_previous": "match",
+   "note": "三秋总则 先丙後癸; 七月 passage stresses 己土 (必不可少). Ambiguous rank of 己 vs 丙."
+  },
+  "乙酉": {
+   "stems": "癸丙",
+   "conditional": "丁",
+   "evidence": "端用癸水以滋桂萼。若秋分後，桂花已开，却喜向阳，又宜用丙，癸水次之",
+   "previous": "癸丙丁",
+   "status_vs_previous": "match",
+   "note": "白露後(秋分前) 癸 first; 秋分後 丙先癸次. 三秋总则 先丙後癸. 己 not prescribed."
+  },
+  "乙戌": {
+   "stems": "癸辛",
+   "conditional": "",
+   "evidence": "九月乙木，根枯叶落，必赖癸水滋养",
+   "previous": "癸辛",
+   "status_vs_previous": "match",
+   "note": "又遇辛金发水之源，定主科甲; 三秋: 惟九月端用癸水，恐丙暖戊土为病."
+  },
+  "乙亥": {
+   "stems": "丙戊",
+   "conditional": "",
+   "evidence": "十月乙木，木不受气，而壬水司令，取丙为用，戊土次之。",
+   "previous": "丙戊",
+   "status_vs_previous": "match"
+  },
+  "乙子": {
+   "stems": "丙",
+   "conditional": "",
+   "evidence": "不宜用癸以冻花木，故端用丙火。",
+   "previous": "丙",
+   "status_vs_previous": "match"
+  },
+  "乙丑": {
+   "stems": "丙",
+   "conditional": "",
+   "evidence": "冬月之木，虽取戊制水，不可作用，端取丙火则可。",
+   "previous": "丙",
+   "status_vs_previous": "match",
+   "note": "No separate 十二月乙木 passage in text; inferred from 冬月 general statement."
+  },
+  "丙寅": {
+   "stems": "壬庚",
+   "conditional": "癸戊",
+   "evidence": "正月丙火，三阳开泰，火气渐炎，取壬为尊，庚金佐之",
+   "previous": "壬庚",
+   "status_vs_previous": "match",
+   "note": "无壬、癸亦姑用，若壬癸俱无，取戊以泄火气，但属平人."
+  },
+  "丙卯": {
+   "stems": "壬",
+   "conditional": "己",
+   "evidence": "二月丙火，阳气舒升，端用壬水",
+   "previous": "壬己",
+   "status_vs_previous": "match",
+   "note": "或无壬水，己土姑用. 庚辛 support 壬 (庚辛已亦透，壬水有根)."
+  },
+  "丙辰": {
+   "stems": "壬甲",
+   "conditional": "庚",
+   "evidence": "用壬水，或成土局，取甲木为辅，壬不可离",
+   "previous": "壬甲",
+   "status_vs_previous": "match",
+   "note": "无甲用庚，助壬水泄土气. 三春: 三月土重晦光，取甲佐之."
+  },
+  "丙巳": {
+   "stems": "壬庚",
+   "conditional": "癸",
+   "evidence": "四月端用壬水，金为佐",
+   "previous": "壬癸庚",
+   "status_vs_previous": "match",
+   "note": "得庚发水源; 或无壬水，癸亦姑用. | Ours ranks a conditional stem ahead of a core stem (secondary order)."
+  },
+  "丙午": {
+   "stems": "壬庚",
+   "conditional": "癸",
+   "evidence": "五月丙火愈炎，得壬庚高透，方为上命。",
+   "previous": "壬庚",
+   "status_vs_previous": "match",
+   "note": "三夏: 五月亦端用壬…丁多、兼看癸水."
+  },
+  "丙未": {
+   "stems": "壬庚",
+   "conditional": "",
+   "evidence": "六月丙火退气，三代生寒，壬水为用，取庚辅佐。",
+   "previous": "壬庚",
+   "status_vs_previous": "match"
+  },
+  "丙申": {
+   "stems": "壬戊",
+   "conditional": "",
+   "evidence": "故仍用壬水辅映光辉。…如壬多，取戊制方妙",
+   "previous": "壬戊",
+   "status_vs_previous": "match",
+   "note": "戊 only when 壬多."
+  },
+  "丙酉": {
+   "stems": "壬",
+   "conditional": "癸",
+   "evidence": "仍用壬水辅映",
+   "previous": "壬癸",
+   "status_vs_previous": "match",
+   "note": "若无壬水，癸亦可用."
+  },
+  "丙戌": {
+   "stems": "甲壬",
+   "conditional": "癸",
+   "evidence": "所忌土晦光，必须先用甲木，次取壬水。",
+   "previous": "甲壬",
+   "status_vs_previous": "match",
+   "note": "苦无壬水，得癸透干，亦可."
+  },
+  "丙亥": {
+   "stems": "甲戊庚壬",
+   "conditional": "",
+   "evidence": "得见甲戊庚出干，可云科甲",
+   "previous": "甲戊庚壬",
+   "status_vs_previous": "match",
+   "note": "总之十月丙火，木旺宜庚，水旺宜戊，火旺用壬，随宜酌用 — no fixed priority."
+  },
+  "丙子": {
+   "stems": "壬戊",
+   "conditional": "己癸",
+   "evidence": "冬至一阳生，弱中复强，壬水为最，戊土佐之。",
+   "previous": "壬戊己",
+   "status_vs_previous": "match",
+   "note": "无戊见己; 或无壬水，癸亦可用."
+  },
+  "丙丑": {
+   "stems": "壬甲",
+   "conditional": "",
+   "evidence": "喜壬为用，己土司令，土多又不可少甲",
+   "previous": "壬甲",
+   "status_vs_previous": "match"
+  },
+  "丁寅": {
+   "stems": "庚甲",
+   "conditional": "",
+   "evidence": "非庚不能劈甲，何以引丁，姑用庚金。",
+   "previous": "甲庚",
+   "status_vs_previous": "order",
+   "note": "用 is 庚 (to split the 当权 甲 which then 引丁)."
+  },
+  "丁卯": {
+   "stems": "庚甲",
+   "conditional": "",
+   "evidence": "二月丁火，湿乙伤丁，先庚後甲",
+   "previous": "庚甲",
+   "status_vs_previous": "match"
+  },
+  "丁辰": {
+   "stems": "甲庚",
+   "conditional": "",
+   "evidence": "先用甲木引丁制土，次看庚金",
+   "previous": "甲庚",
+   "status_vs_previous": "match"
+  },
+  "丁巳": {
+   "stems": "甲庚",
+   "conditional": "",
+   "evidence": "虽取甲引丁，必用庚劈甲",
+   "previous": "甲庚",
+   "status_vs_previous": "match",
+   "note": "甲多、又取庚为先; 癸 is 病."
+  },
+  "丁午": {
+   "stems": "壬庚癸",
+   "conditional": "甲",
+   "evidence": "得庚壬两透者，科甲定然",
+   "previous": "壬庚癸",
+   "status_vs_previous": "match",
+   "note": "五月丁火 不宜乱用甲木; 得一癸透，名独杀当权; 若干支无火局，有水透干，须用甲木，又要庚劈甲."
+  },
+  "丁未": {
+   "stems": "甲壬庚",
+   "conditional": "",
+   "evidence": "专取甲木，壬水次之。",
+   "previous": "甲壬庚",
+   "status_vs_previous": "match",
+   "note": "无庚不妙."
+  },
+  "丁申": {
+   "stems": "甲庚丙",
+   "conditional": "乙戊",
+   "evidence": "端用甲木…仍取庚劈甲，为引火之物，或借丙暖金晒甲",
+   "previous": "甲庚丙戊",
+   "status_vs_previous": "match",
+   "note": "七八月或无甲木，乙亦可用. Quote spans an ellipsis (two verbatim fragments)."
+  },
+  "丁酉": {
+   "stems": "甲庚丙",
+   "conditional": "乙戊",
+   "evidence": "七月甲丙，申中有庚，八月甲丙庚皆用",
+   "previous": "甲庚丙戊",
+   "status_vs_previous": "match",
+   "note": "八九月丁火 passage has no explicit priority; from 七月 passage. 无甲用乙."
+  },
+  "丁戌": {
+   "stems": "甲庚",
+   "conditional": "戊",
+   "evidence": "九月端用甲庚",
+   "previous": "甲庚戊",
+   "status_vs_previous": "match",
+   "note": "用甲者，庚不可少 (八九月丁火)."
+  },
+  "丁亥": {
+   "stems": "甲庚",
+   "conditional": "",
+   "evidence": "三冬丁火微寒，端用庚甲，甲乃庚之良友，凡用甲木，庚不可少",
+   "previous": "甲庚",
+   "status_vs_previous": "match",
+   "note": "十月 passage literally says 庚甲; 三冬 summary says 甲木为尊，庚金佐之. Ranked 甲 first per summary."
+  },
+  "丁子": {
+   "stems": "甲庚",
+   "conditional": "戊癸",
+   "evidence": "三冬丁火，甲木为尊，庚金佐之，戊癸权宜酌用可也。",
+   "previous": "甲庚",
+   "status_vs_previous": "match",
+   "note": "No 十一月 specific prescription beyond this; 戊 to 破癸, 癸 to 制火 when 多丙丁."
+  },
+  "丁丑": {
+   "stems": "甲庚",
+   "conditional": "戊癸",
+   "evidence": "三冬丁火，甲木为尊，庚金佐之，戊癸权宜酌用可也。",
+   "previous": "甲庚",
+   "status_vs_previous": "match",
+   "note": "No 十二月丁火 passage; from 三冬 summary."
+  },
+  "戊寅": {
+   "stems": "丙甲癸",
+   "conditional": "",
+   "evidence": "正二月先丙後，癸又次之",
+   "previous": "丙甲癸",
+   "status_vs_previous": "match",
+   "note": "Both editions read 先丙後，癸又次之 (a character, almost certainly 甲, is missing); 三春 names 丙甲癸. 无丙者，富贵艰辛."
+  },
+  "戊卯": {
+   "stems": "丙甲癸",
+   "conditional": "",
+   "evidence": "正二月先丙後，癸又次之",
+   "previous": "丙甲癸",
+   "status_vs_previous": "match",
+   "note": "Same as 戊寅 (missing char after 後, presumably 甲)."
+  },
+  "戊辰": {
+   "stems": "甲丙癸",
+   "conditional": "",
+   "evidence": "三月先甲後丙，癸又次之",
+   "previous": "甲丙癸",
+   "status_vs_previous": "match"
+  },
+  "戊巳": {
+   "stems": "甲丙癸",
+   "conditional": "",
+   "evidence": "故先用甲疏劈，次取丙癸为佐。",
+   "previous": "甲丙癸",
+   "status_vs_previous": "match"
+  },
+  "戊午": {
+   "stems": "壬甲丙",
+   "conditional": "癸",
+   "evidence": "先看壬水，次取甲木，丙火酌用，用癸力微。",
+   "previous": "壬甲丙",
+   "status_vs_previous": "match"
+  },
+  "戊未": {
+   "stems": "癸丙甲",
+   "conditional": "",
+   "evidence": "先看癸水，次用丙火甲木。",
+   "previous": "癸丙甲",
+   "status_vs_previous": "match"
+  },
+  "戊申": {
+   "stems": "丙癸甲",
+   "conditional": "",
+   "evidence": "先丙後癸，甲木次之。",
+   "previous": "丙癸甲",
+   "status_vs_previous": "match"
+  },
+  "戊酉": {
+   "stems": "丙癸",
+   "conditional": "",
+   "evidence": "赖丙照暖，喜水滋润，先丙後癸，不必木疏。",
+   "previous": "丙癸",
+   "status_vs_previous": "match"
+  },
+  "戊戌": {
+   "stems": "甲癸丙",
+   "conditional": "",
+   "evidence": "不可专用丙，先看甲木，次取癸水",
+   "previous": "甲丙癸",
+   "status_vs_previous": "match",
+   "note": "见金先用癸水，後取丙火."
+  },
+  "戊亥": {
+   "stems": "甲丙",
+   "conditional": "",
+   "evidence": "先用甲木，次取丙火",
+   "previous": "甲丙",
+   "status_vs_previous": "match"
+  },
+  "戊子": {
+   "stems": "丙甲",
+   "conditional": "",
+   "evidence": "十一二月严寒冰冻，丙火为尊，甲木为佐",
+   "previous": "丙甲",
+   "status_vs_previous": "match"
+  },
+  "戊丑": {
+   "stems": "丙甲",
+   "conditional": "",
+   "evidence": "十一二月严寒冰冻，丙火为尊，甲木为佐",
+   "previous": "丙甲",
+   "status_vs_previous": "match"
+  },
+  "己寅": {
+   "stems": "丙",
+   "conditional": "戊庚甲丁",
+   "evidence": "余寒未退，故丙为尊",
+   "previous": "丙庚甲",
+   "status_vs_previous": "match",
+   "note": "壬多要见戊制 (戊 conditional); 甲多 needs 庚 (or 丁泄). Core 用神 stated is only 丙."
+  },
+  "己卯": {
+   "stems": "甲癸丙",
+   "conditional": "",
+   "evidence": "先取甲木疏之，忌合，次取癸水润之",
+   "previous": "甲癸丙",
+   "status_vs_previous": "match",
+   "note": "加以一丙出透，势压百僚."
+  },
+  "己辰": {
+   "stems": "丙癸甲",
+   "conditional": "",
+   "evidence": "先丙後癸，土暖而润，随用甲疏",
+   "previous": "丙癸甲",
+   "status_vs_previous": "match",
+   "note": "以庚金为病."
+  },
+  "己巳": {
+   "stems": "癸丙",
+   "conditional": "辛壬",
+   "evidence": "取癸为要，次用丙火",
+   "previous": "癸丙",
+   "status_vs_previous": "match",
+   "note": "或丙癸两透，又加辛金生癸; 有丙无癸，有壬亦可."
+  },
+  "己午": {
+   "stems": "癸丙",
+   "conditional": "辛壬",
+   "evidence": "取癸为要，次用丙火",
+   "previous": "癸丙",
+   "status_vs_previous": "match",
+   "note": "三夏 combined passage."
+  },
+  "己未": {
+   "stems": "癸丙",
+   "conditional": "辛壬",
+   "evidence": "取癸为要，次用丙火",
+   "previous": "癸丙",
+   "status_vs_previous": "match",
+   "note": "三夏 combined passage."
+  },
+  "己申": {
+   "stems": "癸丙",
+   "conditional": "辛",
+   "evidence": "总之三秋己土，先癸後丙，取辛辅癸",
+   "previous": "丙癸",
+   "status_vs_previous": "order",
+   "note": "Opening says 须丙火温之，癸水润之 … 癸先丙後."
+  },
+  "己酉": {
+   "stems": "癸丙",
+   "conditional": "辛",
+   "evidence": "总之三秋己土，先癸後丙，取辛辅癸",
+   "previous": "丙癸",
+   "status_vs_previous": "order"
+  },
+  "己戌": {
+   "stems": "癸丙甲",
+   "conditional": "辛",
+   "evidence": "先癸後丙，取辛辅癸，九月土盛，宜甲木疏之",
+   "previous": "甲丙癸",
+   "status_vs_previous": "order",
+   "note": "Rank of 甲 vs 辛 in 九月 not stated."
+  },
+  "己亥": {
+   "stems": "丙甲戊",
+   "conditional": "",
+   "evidence": "惟初冬壬旺，取戊制之",
+   "previous": "丙甲戊",
+   "status_vs_previous": "match",
+   "note": "三冬: 取丙为尊，甲木参酌，戊土癸水不用 — 戊 only in 初冬 for 壬旺."
+  },
+  "己子": {
+   "stems": "丙甲",
+   "conditional": "丁戊",
+   "evidence": "三冬己土，湿泥寒冻，非丙暖不生，取丙为尊，甲木参酌",
+   "previous": "丙甲戊",
+   "status_vs_previous": "match",
+   "note": "余皆用丙丁，但丁不能解冻除寒."
+  },
+  "己丑": {
+   "stems": "丙甲",
+   "conditional": "丁戊",
+   "evidence": "三冬己土，湿泥寒冻，非丙暖不生，取丙为尊，甲木参酌",
+   "previous": "丙甲戊",
+   "status_vs_previous": "match"
+  },
+  "庚寅": {
+   "stems": "丙甲丁",
+   "conditional": "戊壬",
+   "evidence": "总之正月庚金，丙甲为上，丁火次之",
+   "previous": "戊甲壬丙丁",
+   "status_vs_previous": "order"
+  },
+  "庚卯": {
+   "stems": "丁甲庚",
+   "conditional": "丙",
+   "evidence": "专用丁火，借甲引丁，借庚劈甲，无丁用丙者",
+   "previous": "丁甲庚丙",
+   "status_vs_previous": "match"
+  },
+  "庚辰": {
+   "stems": "甲丁",
+   "conditional": "丙壬癸",
+   "evidence": "故先甲後丁，不用庚劈甲",
+   "previous": "甲丁壬癸",
+   "status_vs_previous": "match",
+   "note": "得丁甲丙透，不见比肩，科甲之命; 或一甲，无丁，有丙，由行伍而得官职."
+  },
+  "庚巳": {
+   "stems": "壬戊丙",
+   "conditional": "丁",
+   "evidence": "但先壬水…次取戊土，丙火佐之",
+   "previous": "壬戊丙丁",
+   "status_vs_previous": "match",
+   "note": "Also 须用壬丙戊，但非拘执先後; 支成金局…用丁方妙. Quote spans an ellipsis."
+  },
+  "庚午": {
+   "stems": "壬癸",
+   "conditional": "",
+   "evidence": "专用壬水，癸又次之。",
+   "previous": "壬癸",
+   "status_vs_previous": "match"
+  },
+  "庚未": {
+   "stems": "丁甲",
+   "conditional": "",
+   "evidence": "先用丁火，次取甲木。",
+   "previous": "丁甲",
+   "status_vs_previous": "match",
+   "note": "支会土局，甲先丁後."
+  },
+  "庚申": {
+   "stems": "丁甲",
+   "conditional": "丙",
+   "evidence": "专用丁火煆炼，次取木引丁",
+   "previous": "丁甲",
+   "status_vs_previous": "match",
+   "note": "支成水局，乏丁用丙."
+  },
+  "庚酉": {
+   "stems": "丁甲丙",
+   "conditional": "",
+   "evidence": "用丁甲，丙不可少",
+   "previous": "丁甲丙",
+   "status_vs_previous": "match"
+  },
+  "庚戌": {
+   "stems": "甲壬",
+   "conditional": "",
+   "evidence": "宜先用甲疏，後用壬洗，则金自出矣",
+   "previous": "甲壬",
+   "status_vs_previous": "match",
+   "note": "忌见己土浊壬."
+  },
+  "庚亥": {
+   "stems": "丁甲丙",
+   "conditional": "",
+   "evidence": "十月庚金，水冷性寒，非丁莫造，非丙不暖。",
+   "previous": "丁丙",
+   "status_vs_previous": "differs",
+   "note": "丁甲两透…一榜有之，支藏丙火，桃浪之仙."
+  },
+  "庚子": {
+   "stems": "丁甲丙",
+   "conditional": "",
+   "evidence": "仍取丁甲，次取丙火照暖",
+   "previous": "丁甲丙",
+   "status_vs_previous": "match"
+  },
+  "庚丑": {
+   "stems": "丙丁甲",
+   "conditional": "",
+   "evidence": "先取丙火解冻，次取丁火炼金，甲亦不可少。",
+   "previous": "丙丁甲",
+   "status_vs_previous": "match"
+  },
+  "辛寅": {
+   "stems": "己壬庚",
+   "conditional": "丙",
+   "evidence": "故正月辛金，先己後壬，己为君，庚为佐，如用丙火须参看",
+   "previous": "己壬庚",
+   "status_vs_previous": "match"
+  },
+  "辛卯": {
+   "stems": "壬甲",
+   "conditional": "",
+   "evidence": "壬水为尊，见戊己为病，得甲制伏",
+   "previous": "壬甲",
+   "status_vs_previous": "match"
+  },
+  "辛辰": {
+   "stems": "壬甲",
+   "conditional": "",
+   "evidence": "先壬後甲，壬甲两透，富贵必然",
+   "previous": "壬甲",
+   "status_vs_previous": "match"
+  },
+  "辛巳": {
+   "stems": "壬甲癸",
+   "conditional": "",
+   "evidence": "忌丙火之燥烈，喜壬水之洗淘",
+   "previous": "壬甲癸",
+   "status_vs_previous": "match",
+   "note": "有木制戊…癸透壬藏，富真贵假; 壬，癸，甲，三者全无…斯为下品."
+  },
+  "辛午": {
+   "stems": "壬己癸",
+   "conditional": "",
+   "evidence": "五月辛金，壬，癸，己，三者皆用。",
+   "previous": "壬己癸",
+   "status_vs_previous": "match",
+   "note": "须己壬兼用 … 无壬，癸亦可用 — 癸 is substitute for 壬."
+  },
+  "辛未": {
+   "stems": "壬庚甲",
+   "conditional": "",
+   "evidence": "先用壬水，取庚佐之",
+   "previous": "壬庚甲",
+   "status_vs_previous": "match",
+   "note": "但忌戊出，得甲制之，方吉 (甲 conditional on 戊)."
+  },
+  "辛申": {
+   "stems": "壬甲戊",
+   "conditional": "",
+   "evidence": "壬水为尊，甲戊酌用可也，癸水不可为用。",
+   "previous": "壬甲戊",
+   "status_vs_previous": "match"
+  },
+  "辛酉": {
+   "stems": "壬甲",
+   "conditional": "",
+   "evidence": "专用壬水淘洗",
+   "previous": "壬甲",
+   "status_vs_previous": "match",
+   "note": "见甲制土，方妙，无戊，不宜用甲 (甲 conditional on 戊己)."
+  },
+  "辛戌": {
+   "stems": "壬甲",
+   "conditional": "",
+   "evidence": "须甲疏土，壬泄旺金，先壬後甲",
+   "previous": "壬甲",
+   "status_vs_previous": "match"
+  },
+  "辛亥": {
+   "stems": "壬丙",
+   "conditional": "",
+   "evidence": "先用壬水，次取丙火",
+   "previous": "壬丙",
+   "status_vs_previous": "match"
+  },
+  "辛子": {
+   "stems": "壬丙",
+   "conditional": "戊甲",
+   "evidence": "壬丙两透，不见戊癸，衣锦腰金",
+   "previous": "丙戊壬甲",
+   "status_vs_previous": "order",
+   "note": "冬月辛金，须丙温暖，方妙; 或壬多有戊，丙甲出干者，青云之客. Priority 壬 vs 丙 not explicit."
+  },
+  "辛丑": {
+   "stems": "丙壬戊己",
+   "conditional": "",
+   "evidence": "十二月辛金，丙先壬後，戊己次之。",
+   "previous": "丙壬戊己",
+   "status_vs_previous": "match"
+  },
+  "壬寅": {
+   "stems": "庚丙戊",
+   "conditional": "",
+   "evidence": "有庚丙戊三者齐透，科甲功名",
+   "previous": "庚丙戊",
+   "status_vs_previous": "match",
+   "note": "无比肩羊刃者，不必用戊，专用庚金，以丙为佐."
+  },
+  "壬卯": {
+   "stems": "戊辛庚",
+   "conditional": "",
+   "evidence": "二月壬水，先戊後辛，庚金次之。",
+   "previous": "戊辛庚",
+   "status_vs_previous": "match"
+  },
+  "壬辰": {
+   "stems": "甲庚",
+   "conditional": "",
+   "evidence": "先用甲疏季土，次取庚金。",
+   "previous": "甲庚",
+   "status_vs_previous": "match"
+  },
+  "壬巳": {
+   "stems": "壬辛庚",
+   "conditional": "癸",
+   "evidence": "专取壬水比肩为助，次取辛金发源",
+   "previous": "壬辛庚癸",
+   "status_vs_previous": "match",
+   "note": "且暗合丙火，庚金为佐; 或癸辛两出，加以甲透."
+  },
+  "壬午": {
+   "stems": "癸庚",
+   "conditional": "辛壬",
+   "evidence": "取癸为用，取庚为佐",
+   "previous": "癸庚辛",
+   "status_vs_previous": "match",
+   "note": "辛癸亦可参用，其理与四月皆同; 庚壬两透，官居极品."
+  },
+  "壬未": {
+   "stems": "辛甲癸",
+   "conditional": "",
+   "evidence": "六月壬水，先辛後甲，次取癸水。",
+   "previous": "辛甲",
+   "status_vs_previous": "differs"
+  },
+  "壬申": {
+   "stems": "戊丁",
+   "conditional": "",
+   "evidence": "专用戊土，次取丁火佐戊制庚",
+   "previous": "戊丁",
+   "status_vs_previous": "match",
+   "note": "七月壬水，栽用戊土，丁火为佐."
+  },
+  "壬酉": {
+   "stems": "甲庚",
+   "conditional": "",
+   "evidence": "八月壬水，栽用甲木，庚金次之",
+   "previous": "甲庚",
+   "status_vs_previous": "match",
+   "note": "Also 天干有壬，支见申亥 → 戊土作用."
+  },
+  "壬戌": {
+   "stems": "甲丙",
+   "conditional": "",
+   "evidence": "九月壬水，栽用甲木，次用丙火",
+   "previous": "甲丙",
+   "status_vs_previous": "match"
+  },
+  "壬亥": {
+   "stems": "戊丙庚",
+   "conditional": "",
+   "evidence": "十月壬水，专用戊丙，次取庚金。",
+   "previous": "戊丙庚",
+   "status_vs_previous": "match"
+  },
+  "壬子": {
+   "stems": "戊丙",
+   "conditional": "",
+   "evidence": "先取戊土，次用丙火",
+   "previous": "戊丙",
+   "status_vs_previous": "match",
+   "note": "十一月壬水，丙戊并用."
+  },
+  "壬丑": {
+   "stems": "丙丁甲",
+   "conditional": "",
+   "evidence": "腊月壬水，先取丙火，丁甲为佐",
+   "previous": "丙丁甲",
+   "status_vs_previous": "match",
+   "note": "Opening: 专用丙火…甲木佐之."
+  },
+  "癸寅": {
+   "stems": "辛丙庚",
+   "conditional": "",
+   "evidence": "先用辛金，生癸水之源，次用丙火照暖",
+   "previous": "辛丙",
+   "status_vs_previous": "differs",
+   "note": "正月癸水，辛金为主，庚金次之，丙亦可少 — 庚 vs 丙 rank ambiguous."
+  },
+  "癸卯": {
+   "stems": "庚辛",
+   "conditional": "",
+   "evidence": "专用庚金为用，辛金次之",
+   "previous": "庚辛",
+   "status_vs_previous": "match"
+  },
+  "癸辰": {
+   "stems": "丙辛甲",
+   "conditional": "",
+   "evidence": "清明後，火气未炽，专用丙火",
+   "previous": "丙辛甲",
+   "status_vs_previous": "match",
+   "note": "谷雨後，虽用丙火，尚宜辛甲佐之; 三月癸水，辛甲皆酌用."
+  },
+  "癸巳": {
+   "stems": "辛",
+   "conditional": "壬庚",
+   "evidence": "四月癸水，喜辛金为用，无辛用庚",
+   "previous": "辛",
+   "status_vs_previous": "match",
+   "note": "若辛高透，不见丁火，加以壬透，主科名荣贵."
+  },
+  "癸午": {
+   "stems": "庚辛壬",
+   "conditional": "癸",
+   "evidence": "五月癸水，庚辛壬参酌并用可也。",
+   "previous": "庚辛壬癸",
+   "status_vs_previous": "match",
+   "note": "宜见比劫，方得辛金之用."
+  },
+  "癸未": {
+   "stems": "庚辛",
+   "conditional": "壬癸",
+   "evidence": "所以专用庚辛",
+   "previous": "庚辛壬癸",
+   "status_vs_previous": "match",
+   "note": "上半月 宜比劫助身 (壬癸), 与五月一理; 忌丁."
+  },
+  "癸申": {
+   "stems": "丁",
+   "conditional": "甲",
+   "evidence": "必取丁火为用，或丁透有甲，名有焰之火",
+   "previous": "丁",
+   "status_vs_previous": "match",
+   "note": "No 庚/壬 prescribed."
+  },
+  "癸酉": {
+   "stems": "辛丙",
+   "conditional": "",
+   "evidence": "故取辛金为用，丙火佐之",
+   "previous": "辛丙",
+   "status_vs_previous": "match"
+  },
+  "癸戌": {
+   "stems": "辛甲",
+   "conditional": "壬癸",
+   "evidence": "九月癸水，辛甲并用。",
+   "previous": "辛甲壬癸",
+   "status_vs_previous": "match",
+   "note": "专用辛金发水之源，要比肩滋甲制戊 (比肩=壬癸 support)."
+  },
+  "癸亥": {
+   "stems": "庚辛",
+   "conditional": "戊丁",
+   "evidence": "宜用庚辛为妙",
+   "previous": "庚辛戊丁",
+   "status_vs_previous": "match",
+   "note": "戊 if 一派壬水; 丁 if 一派庚辛."
+  },
+  "癸子": {
+   "stems": "丙辛",
+   "conditional": "",
+   "evidence": "专用丙火解冻",
+   "previous": "丙辛",
+   "status_vs_previous": "match",
+   "note": "又要辛金滋扶，无丙有辛，不妙."
+  },
+  "癸丑": {
+   "stems": "丙",
+   "conditional": "丁壬戊",
+   "evidence": "十二月癸水，寒极成冰，万物不能舒泰，宜丙火解冻",
+   "previous": "丙丁",
+   "status_vs_previous": "match",
+   "note": "加以壬透，支中多戊，名水辅阳光 (壬戊 support); 有丁出，颇吉; 雪後灯光 (丁) for 癸己会党."
+  }
+ }
+}
