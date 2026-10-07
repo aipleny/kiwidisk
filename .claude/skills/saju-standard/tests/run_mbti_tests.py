@@ -35,6 +35,16 @@ for b in bad_inputs:
         rejected += 1
 check("잘못된 유형 거부 5/5", rejected == len(bad_inputs))
 check("소문자 허용", M.parse_type("infp") == "INFP")
+check("-A/-T 접미사", M.parse_type("enfp-t") == "ENFP" and M.parse_identity("enfp-t") == "T"
+      and M.parse_identity("INTJ-A") == "A" and M.parse_identity("INTJ") is None)
+bad_suffix = 0
+for b in ("ENFP-X", "ENFP-", "ENFP-TT"):
+    try:
+        M.parse_type(b)
+    except ValueError:
+        bad_suffix += 1
+check("잘못된 접미사 거부 3/3", bad_suffix == 3)
+check("-T 말투 규칙 추가", len(M.tone("ENFP", "T")["rules"]) == 5 and len(M.tone("ENFP")["rules"]) == 4)
 
 src = open(os.path.join(ENGINE, "mbti_layer.py"), encoding="utf-8").read()
 check("사주 엔진 import 없음(무접점)", "import saju_std" not in src and "import interpret" not in src)

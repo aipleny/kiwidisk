@@ -88,6 +88,7 @@ python3 "<SKILL>/engine/interpret.py" --date 1995-08-15 --time 14:30 --sex male 
 python3 "<SKILL>/engine/mbti_layer.py" --type INFP --saju /tmp/saju_me.json
 ```
 
+- `ENFP-T`처럼 16Personalities 정체성 접미사(-A/-T)를 붙여도 된다. 말투 규칙만 하나 추가되며 MBTI 공식 지표가 아님을 `tone.identity_note`로 밝힌다.
 - `tone.rules`: **풀이 전체의 전달 방식**에 적용한다(내용은 바꾸지 않는다).
 - `compare.axes`: "타고난 결 vs 지금의 나" 장을 추가해 축별 `talking_point`를 전한다. 불일치는 좋고 나쁨이 아니라 대화 소재로 다룬다.
 - `timing.periods`: 9장(세운)과 8장(대운)에 "이 시기의 성장 과제" 한 줄씩 덧붙인다.

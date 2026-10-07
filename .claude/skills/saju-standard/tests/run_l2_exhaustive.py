@@ -57,6 +57,20 @@ def check(stems, branches, r):
         errs.append("종격 조건")
     if ys["element"] not in S.ELEMENTS_KO or ys["confidence"] not in ("높음", "보통", "낮음"):
         errs.append("용신 필드")
+    dm = S.STEM_EL[stems[2]]
+    supportive = (dm, (dm - 1) % 5)
+    if ys["method"] == "억부":
+        if not st["strong"] and ys["huisin_idx"] not in supportive:
+            errs.append("신약인데 희신이 극설 오행")
+        if st["strong"] and ys["huisin_idx"] in supportive:
+            errs.append("신강인데 희신이 생부 오행")
+    if len({ys["element_idx"], ys["huisin_idx"], ys["gisin_idx"]}) != 3:
+        errs.append("용·희·기신 중복")
+    # 용신 간지(용신 오행 천간+지지)는 길, 기신 간지는 흉이어야 한다
+    good = next(i for i in range(60) if S.STEM_EL[i % 10] == ys["element_idx"] and S.STEM_EL[S.main_hidden(i % 12)] == ys["element_idx"])
+    bad = next(i for i in range(60) if S.STEM_EL[i % 10] == ys["gisin_idx"] and S.STEM_EL[S.main_hidden(i % 12)] == ys["gisin_idx"])
+    if I.luck_rating(dm, ys, good)[1] != "길" or I.luck_rating(dm, ys, bad)[1] != "흉":
+        errs.append("운 길흉 방향")
     return errs
 
 

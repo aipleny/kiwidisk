@@ -260,10 +260,20 @@ def yongsin(stems, branches, st, jh, gk):
     sangsin_els = [group_el(dm, g) for g in gk["sangsin_groups"]]
     agree = sum([chosen == eb_el, chosen == jh["first_element_idx"], chosen in sangsin_els])
     confidence = "높음" if agree >= 2 else "보통" if agree == 1 else "낮음"
+    huisin = mother(chosen)
+    supportive = (dm, mother(dm))
+    if method == "억부" and not st["strong"] and huisin not in supportive:
+        # 신약에서 용신의 어머니가 관성이면(살인상생) 그 관성이 바로 병이므로, 다른 생부 오행을 희신으로
+        huisin = dm if chosen == mother(dm) else mother(dm)
+    elif method == "억부" and st["strong"] and huisin in supportive:
+        # 신강에서 식상 용신의 어머니(비겁)는 일간을 더 키우므로, 용신이 생하는 오행을 희신으로
+        huisin = produces(chosen)
     return {
         "element": S.ELEMENTS_KO[chosen], "element_idx": chosen, "group": group_of(dm, chosen),
         "method": method, "reason": why, "confidence": confidence,
-        "huisin": S.ELEMENTS_KO[mother(chosen)], "gisin": S.ELEMENTS_KO[controller(chosen)],
+        "huisin": S.ELEMENTS_KO[huisin], "huisin_idx": huisin,
+        "gisin": S.ELEMENTS_KO[controller(chosen)], "gisin_idx": controller(chosen),
+        "strong": st["strong"],
         "jong": jong[0] if jong else None,
         "candidates": {
             "억부": {"element": S.ELEMENTS_KO[eb_el], "group": eb_group, "reason": eb_why, "tag": "[적천수]"},
@@ -273,22 +283,57 @@ def yongsin(stems, branches, st, jh, gk):
     }
 
 
-def luck_rating(dm, ys, pillar60):
-    """운 간지의 길흉: 용신·희신 +, 기신 −, 그 외 0. 천간 40%, 지지 60%."""
-    s_el = S.STEM_EL[pillar60 % 10]
-    b_el = S.STEM_EL[S.main_hidden(pillar60 % 12)]
+def luck_rating(dm, ysd, pillar60):
+    """운 간지의 길흉. 천간 40%, 지지(정기) 60%.
+    용신 +2, 희신 +1, 기신(용신을 극함) −2. 억부로 정한 경우 강약 방향에 거스르는 오행 −1
+    (신약인데 식상·재·관, 신강인데 비겁·인성), 그 외 0."""
+    ys, hs, gs = ysd["element_idx"], ysd["huisin_idx"], ysd["gisin_idx"]
+    supportive = (dm, mother(dm))
+
     def val(el):
         if el == ys:
             return 2
-        if el == mother(ys):
+        if el == hs:
             return 1
-        if el == controller(ys):
+        if el == gs:
             return -2
-        if el == produces(ys):
-            return -1  # 용신을 설기
+        if ysd["method"] == "억부" and ((el in supportive) == ysd["strong"]):
+            return -1
         return 0
+    s_el = S.STEM_EL[pillar60 % 10]
+    b_el = S.STEM_EL[S.main_hidden(pillar60 % 12)]
     v = 0.4 * val(s_el) + 0.6 * val(b_el)
     return round(v, 2), "길" if v >= 0.8 else "흉" if v <= -0.8 else "평"
+
+
+def natal_relations(stems, branches, pillar60):
+    """운 간지가 원국 각 기둥과 맺는 천간합·충, 지지 육합·충·형·파·해, 반합."""
+    ls, lb = pillar60 % 10, pillar60 % 12
+    out = []
+    for i in range(4):
+        s, b = stems[i], branches[i]
+        if s is None:
+            continue
+        pos = S.POS[i] + "주"
+        if frozenset((ls, s)) in S.STEM_HAP:
+            out.append(f"{pos} 천간합({S.STEMS[ls]}{S.STEMS[s]})")
+        if frozenset((ls, s)) in S.STEM_CHUNG:
+            out.append(f"{pos} 천간충({S.STEMS[ls]}{S.STEMS[s]})")
+        kb = frozenset((lb, b))
+        if kb in S.YUKHAP:
+            out.append(f"{pos} 육합({S.BRANCHES[lb]}{S.BRANCHES[b]})")
+        if (lb - b) % 12 == 6:
+            out.append(f"{pos} 충({S.BRANCHES[lb]}{S.BRANCHES[b]})")
+        if kb in S.PA:
+            out.append(f"{pos} 파({S.BRANCHES[lb]}{S.BRANCHES[b]})")
+        if kb in S.HAE:
+            out.append(f"{pos} 해({S.BRANCHES[lb]}{S.BRANCHES[b]})")
+        if kb == frozenset((0, 3)) or (lb != b and any({lb, b} <= set(m) for m, _ in S.HYEONG_SETS)):
+            out.append(f"{pos} 형({S.BRANCHES[lb]}{S.BRANCHES[b]})")
+        for sang, wang, go, el in S.SAMHAP:
+            if lb != b and {lb, b} <= {sang, wang, go} and wang in (lb, b):
+                out.append(f"{pos} 반합({S.BRANCHES[lb]}{S.BRANCHES[b]}→{S.ELEMENTS_KO[el]})")
+    return out
 
 
 def interpret_core(stems, branches):
@@ -321,7 +366,7 @@ def interpret(l1):
     branches = [S.BRANCHES.index(p[k]["branch"]["char"]) if p[k] else None for k in order]
     core = interpret_core(stems, branches)
     dm = S.STEM_EL[stems[2]]
-    ys = core["yongsin"]["element_idx"]
+    ys = core["yongsin"]
     core["ten_god_distribution"] = ten_god_distribution(stems, branches)
     core["palace"] = {"연주": "조상·초년(~19세)", "월주": "부모·형제·사회(20~39세)", "일주": "본인·배우자(40~59세)", "시주": "자녀·말년(60세~)"}
     if "daewoon" in l1:
@@ -329,11 +374,14 @@ def interpret(l1):
         for d in l1["daewoon"]["list"]:
             idx = S.parse_gz(d["pillar"])
             v, label = luck_rating(dm, ys, idx)
-            core["daewoon_rating"].append({"pillar": d["pillar"], "age_from": d["age_from"], "score": v, "rating": label})
+            core["daewoon_rating"].append({"pillar": d["pillar"], "age_from": d["age_from"], "score": v, "rating": label,
+                                           "natal": natal_relations(stems, branches, idx)})
     core["seun_rating"] = []
     for s in l1.get("seun", []):
-        v, label = luck_rating(dm, ys, S.parse_gz(s["pillar"]))
-        core["seun_rating"].append({"year": s["year"], "pillar": s["pillar"], "score": v, "rating": label})
+        idx = S.parse_gz(s["pillar"])
+        v, label = luck_rating(dm, ys, idx)
+        core["seun_rating"].append({"year": s["year"], "pillar": s["pillar"], "score": v, "rating": label,
+                                    "natal": natal_relations(stems, branches, idx)})
     return core
 
 

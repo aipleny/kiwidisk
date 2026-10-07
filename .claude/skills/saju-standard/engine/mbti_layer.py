@@ -30,10 +30,18 @@ POSITION_KO = ["주기능", "부기능", "3차 기능", "열등 기능"]
 
 
 def parse_type(t):
-    t = (t or "").strip().upper()
-    if t not in TYPES:
-        raise ValueError(f"MBTI 유형 4글자를 입력하세요 (예: INFP). 입력값: {t!r}")
-    return t
+    """'ENFP', 'enfp-t', 'INTJ-A' → 4글자 유형. 정체성 접미사는 parse_identity 로 따로 읽는다."""
+    raw = (t or "").strip().upper()
+    core = raw.split("-")[0]
+    if core not in TYPES or (raw != core and raw[5:] not in ("A", "T")):
+        raise ValueError(f"MBTI 유형 4글자를 입력하세요 (예: INFP, ENFP-T). 입력값: {t!r}")
+    return core
+
+
+def parse_identity(t):
+    """16Personalities 정체성 지표(-A 확신형 / -T 민감형). MBTI 공식 지표가 아니다."""
+    raw = (t or "").strip().upper()
+    return raw[5:] if len(raw) == 6 and raw[4] == "-" else None
 
 
 def flip(att):
@@ -68,9 +76,19 @@ TONE = {
 }
 
 
-def tone(t):
-    return {"type": t, "rules": [TONE[c] for c in t],
-            "instruction": "해석 내용은 바꾸지 말고 전달 방식만 아래 규칙대로 조정한다."}
+IDENTITY_TONE = {
+    "T": "주의할 대목은 불안을 키우지 않게 '대비하면 되는 것'으로 말하고, 바로 할 수 있는 작은 다음 걸음과 함께 전달",
+    "A": "돌려 말하지 않고 핵심부터 직설적으로, 대신 놓치기 쉬운 위험 신호는 분명히 짚음",
+}
+
+
+def tone(t, identity=None):
+    rules = [TONE[c] for c in t]
+    if identity in IDENTITY_TONE:
+        rules.append(IDENTITY_TONE[identity])
+    return {"type": t, "identity": identity, "rules": rules,
+            "instruction": "해석 내용은 바꾸지 말고 전달 방식만 아래 규칙대로 조정한다.",
+            "identity_note": "-A/-T는 16Personalities의 정체성 지표로 MBTI 공식 지표가 아니며, 말투 조정에만 쓴다." if identity else None}
 
 
 # ── 2. 비교 카드 ────────────────────────────────────────────────────────
@@ -249,8 +267,9 @@ def compat(ta, tb, mode="love", saju_a=None, saju_b=None):
 
 
 def build(t, saju=None, partner_type=None, partner_saju=None, mode="love"):
+    identity = parse_identity(t)
     t = parse_type(t)
-    card = {"type": t, "stack": cognitive_stack(t), "tone": tone(t), "note": NOTE}
+    card = {"type": t, "identity": identity, "stack": cognitive_stack(t), "tone": tone(t, identity), "note": NOTE}
     if saju:
         card["compare"] = compare(t, saju["l2"], saju["l1"])
         card["timing"] = timing(t, saju["l1"], saju["l2"])
