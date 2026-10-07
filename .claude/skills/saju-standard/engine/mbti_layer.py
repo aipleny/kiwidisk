@@ -127,7 +127,7 @@ def compare(t, l2, l1=None):
     for axis, (plus, minus) in AXIS_SIGNALS.items():
         p = sum(sig.get(k, 0) * w for k, w in plus.items())
         m = sum(sig.get(k, 0) * w for k, w in minus.items())
-        diff = p - m
+        diff = round(p - m, 6)  # 합산 순서에 따른 부동소수 오차 제거(JS 엔진과 동일)
         lean = axis[0] if diff > 0.5 else axis[1] if diff < -0.5 else "균형"
         self_letter = t["EISNTFJP".index(axis[0]) // 2]
         match = lean == "균형" or lean == self_letter
